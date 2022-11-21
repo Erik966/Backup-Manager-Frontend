@@ -1,7 +1,6 @@
 <template>
   <div id = "app">
-    <Navigation></Navigation>
-    <router-view/>
+    <Navigation/>
     <div class="auth-wrapper">
       <div class="auth-inner">
         <router-view/>
