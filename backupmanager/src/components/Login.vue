@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form @submit.prevent="handleLogin">
     <h3>Login</h3>
 
     <div class="from-group">
@@ -22,22 +22,26 @@
       />
     </div>
 
-    <button class="btn btn-primary btn-block" @click="handleLogin">Login{{password}}</button>
-
+    <button class="btn btn-primary btn-block" @click="handleLogin">
+      Login
+    </button>
   </form>
 </template>
 
 <script>
-
-let password = ""
-console.log("1. " + password );
-
-
 export default {
   name: "Login",
+  data() {
+    return {
+      password: this.password,
+      username: this.username,
+    };
+  },
   methods: {
     handleLogin() {
-      //console.log(username+ password + "123");
+      if(this.password == "admin" && this.username == "admin"){
+        console.log("right pw");
+      }
     },
   },
 };
