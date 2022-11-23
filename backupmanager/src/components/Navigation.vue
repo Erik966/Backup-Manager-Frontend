@@ -5,19 +5,40 @@
         <div class = "collapse navbar-collapse">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <router-link to="/login" class="nav-link">Login</router-link>
+              <router-link v-if="loggedIn == false" to="/login" class="nav-link">Login</router-link>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">Sign Up</a>
+              <a href="#" v-if="loggedIn == false" class="nav-link">Sign Up</a>
+            </li>
+            <li class="nav-item">
+              <router-link @click="reset" to="/login" v-if="loggedIn" class="nav-link">Logout</router-link>
             </li>
           </ul>
         </div>
       </div>
     </nav>
 </template>
-
+ 
 <script>
-export default ({
+
+
+console.log(loggedIn)
+
+export default {
     name: 'Navigation',
-})
+    props: {
+      loggedIn
+    },
+    methods:{
+      reset(){
+        console.log(loggedIn)
+        loggedIn = false;
+      },
+      created() {
+    console.log(this.foo)
+        }
+    }
+}
+
+
 </script>

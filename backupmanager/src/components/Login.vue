@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="handleLogin">
+  <form>
     <h3>Login</h3>
 
     <div class="from-group">
@@ -22,9 +22,7 @@
       />
     </div>
 
-    <button class="btn btn-primary btn-block" @click="handleLogin">
-      Login
-    </button>
+    <button class="btn btn-primary btn-block" @click.prevent="handleSubmit">Login</button>
   </form>
 </template>
 
@@ -38,9 +36,10 @@ export default {
     };
   },
   methods: {
-    handleLogin() {
-      if(this.password == "admin" && this.username == "admin"){
-        console.log("right pw");
+    handleSubmit() {
+      if (this.password == "admin" && this.username == "admin") {
+        this.$router.push("/");
+        this.$emit("handleLogin", true);
       }
     },
   },

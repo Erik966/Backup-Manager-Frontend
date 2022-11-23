@@ -1,21 +1,36 @@
 <template>
   <div id = "app">
-    <Navigation/>
+    <Navigation :loggedIn="loggedIn"/>
     <div class="auth-wrapper">
       <div class="auth-inner">
-        <router-view/>
+        <router-view @handleLogin="loogedIn"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+
+
 import Navigation from "./components/Navigation.vue" 
 export default {
   name: 'App',
+  data () {
+    return{
+      loggedIn: false,
+    }
+  },
   components:{
       Navigation,
   },
+  methods: {
+    loogedIn(){
+      this.loggedIn = true;
+      console.log("hello we got the first step")
+    }
+  }
+
+
 }   
 
 </script>

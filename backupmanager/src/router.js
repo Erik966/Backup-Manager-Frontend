@@ -4,13 +4,17 @@ import Login from "./components/Login.vue";
 
 const routes = [
   { path: "/", component: Home },
-  { path: "/login", component: Login },
+  {
+    path: "/login",
+    component: Login,
+    meta: { correctCredentials: true },
+  },
 ];
 
 const router = createRouter({
-    history: createWebHistory(process.env.Base_URL),
-    routes
-})
+  history: createWebHistory(process.env.Base_URL),
+  routes,
+});
 
 export default router;
 
