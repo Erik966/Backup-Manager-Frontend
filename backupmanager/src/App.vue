@@ -26,7 +26,6 @@ export default {
   methods: {
     loogedIn(){
       this.loggedIn = true;
-      console.log("hello we got the first step")
     }
   }
 

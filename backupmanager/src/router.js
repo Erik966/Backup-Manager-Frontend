@@ -3,11 +3,12 @@ import Home from "./components/Home.vue";
 import Login from "./components/Login.vue";
 
 const routes = [
-  { path: "/", component: Home },
+  { path: "/", name: "Home", component: Home, props: true
+},
   {
     path: "/login",
     component: Login,
-    meta: { correctCredentials: true },
+    props: true,
   },
 ];
 

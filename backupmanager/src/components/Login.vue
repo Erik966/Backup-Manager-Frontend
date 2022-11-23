@@ -38,7 +38,7 @@ export default {
   methods: {
     handleSubmit() {
       if (this.password == "admin" && this.username == "admin") {
-        this.$router.push("/");
+        this.$router.push({ name: 'Home', params: {username: this.username}})
         this.$emit("handleLogin", true);
       }
     },

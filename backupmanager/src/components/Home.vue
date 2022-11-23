@@ -11,7 +11,7 @@
 
 export default ({
     name: 'Home',
-    mounted() {
+    computed() {
     let data = this.$route.params.data;
     console.log("data is", data); 
   }
