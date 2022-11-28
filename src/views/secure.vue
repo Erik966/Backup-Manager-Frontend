@@ -6,7 +6,7 @@
   import Secure from '../components/Secure'
 
   export default {
-    name: 'Home',
+    //name: 'Home',
 
     components: {
       Secure,

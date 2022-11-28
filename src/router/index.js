@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '../views/Login.vue'
+import login from '../views/login.vue'
 import secure from '../views/secure.vue'
 import settings from '../views/settings.vue'
 
@@ -10,8 +10,8 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Login',
-    component: Login
+    name: 'login',
+    component: login
   },
   {
     path: '/secure',

@@ -1,8 +1,5 @@
 <template>
 <v-app>
-  
-   
-
     <v-main>
        <v-alert
               color="error"
@@ -30,13 +27,12 @@
 
       </v-card>
     </v-main>
-
-
 </v-app>
 </template>
 
 <script>
 import axios from 'axios';
+
 export default {
   data()
   {

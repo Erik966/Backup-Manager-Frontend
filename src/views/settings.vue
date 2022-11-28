@@ -6,7 +6,7 @@
     import Settings from '../components/Settings'
   
     export default {
-      name: 'Home',
+      //name: 'Home',
   
       components: {
         Settings,
