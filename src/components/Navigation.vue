@@ -3,7 +3,7 @@
     <v-navigation-drawer v-model="drawer" app>
       <v-list dense rounded>
         <v-list-item
-          v-for="item in items"
+          v-for="item in routingItems"
           :key="item.title"
           link
           @click="on_menu_item_click(item.title)"
@@ -36,16 +36,17 @@ import { mdiLogout } from "@mdi/js";
 export default {
   data: () => ({
     drawer: null,
-    items: [
+    routingItems: [
       { title: "File Explorer", icon: mdiFolder },
       { title: "Settings", icon: mdiCogOutline },
       { title: "Logout", icon: mdiLogout },
     ],
   }),
   methods: {
-    on_menu_item_click(menuItemTitle) {
-      if (menuItemTitle.toLowerCase() != this.$router.currentRoute.name) {
-        switch (menuItemTitle) {
+    on_menu_item_click(routingItemName) {
+      // TODO: sehr schlecht, dass secure eigentlich fileExplorer ist ( umbenennen ?)
+      if (routingItemName.toLowerCase() != this.$router.currentRoute.name) {
+        switch (routingItemName) {
           case "File Explorer":
             this.$router.push("/secure");
             break;

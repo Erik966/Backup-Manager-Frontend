@@ -43,7 +43,6 @@ export default {
       failed: false
     }
   },
-  name: 'HelloWorld',
   props: {
   },
    methods: {
