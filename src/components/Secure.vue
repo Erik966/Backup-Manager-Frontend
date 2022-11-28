@@ -1,31 +1,6 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-model="drawer" app>
-      <v-list dense rounded>
-        <v-list-item
-          v-for="item in items"
-          :key="item.title"
-          link
-          @click="on_menu_item_click(item.title)"
-        >
-          <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-
-      <!--  -->
-    </v-navigation-drawer>
-
-    <v-app-bar app>
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-
-      <v-toolbar-title>Backup Manager</v-toolbar-title>
-    </v-app-bar>
+    <Navigation />
 
     <v-main>
       <h1 align>File Explorer</h1>
@@ -49,12 +24,17 @@
 </template>
 
 <script>
-import axios from "axios";
+import Navigation from '../components/Navigation.vue'
 import { mdiFolder } from "@mdi/js";
 import { mdiCogOutline } from "@mdi/js";
 import { mdiLogout } from "@mdi/js";
+
+import axios from "axios";
 import { mdiFileAccount } from "@mdi/js";
 export default {
+  components: {
+      Navigation,
+    },
   data: () => ({
     currentPath: [],
     drawer: null,
@@ -86,20 +66,6 @@ export default {
       }
       this.currentPath.push(clicked_item["title"]);
       this.get_files();
-    },
-    on_menu_item_click(menuItemTitle) {
-      switch (menuItemTitle) {
-        case "File Explorer":
-          break;
-        case "Settings":
-          console.log("hello");
-        this.$router.push('/settings');
-          break;
-        case "Logout":
-        // TODO: localStorage.removeItem('token', res.data.token);
-        this.$router.push('/');
-          break;
-      }
     },
     get_files() {
       console.log(this.currentPath);
