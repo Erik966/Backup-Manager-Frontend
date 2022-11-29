@@ -6,16 +6,24 @@
       <v-list dense rounded>
         <v-list-item v-for="item in memoryLocations" :key="item.title" link>
           <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
+            <v-icon>{{ folderIcon }}</v-icon>
           </v-list-item-icon>
-          <!--         <v-list-item-content>
-          <v-list-item-title @click="on_item_click(item.number)">{{
-            item.title
-          }}</v-list-item-title>
-        </v-list-item-content> -->
+          <v-list-item-content>
+            <v-list-item-title>{{ item.path }}</v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-icon v-if="deleteIconsActive">
+            <v-icon id="deleteIcon" @click="onPathDeleteIconClicked(item)" >{{ deleteIcon }}</v-icon>
+          </v-list-item-icon>
         </v-list-item>
       </v-list>
-      <v-btn @click="onAddedButtonClicked"> </v-btn>
+      <v-main>
+        <v-btn @click="onAddedButtonClicked" item.icon>
+          Add Backup Filepath <v-icon id="addIcon">{{ addIcon }}</v-icon>
+        </v-btn>
+        <v-btn @click="onDeleteButtonClicked" item.icon>
+          Delete <v-icon id="addIcon">{{ deleteIcon }}</v-icon>
+        </v-btn>
+      </v-main>
     </v-main>
   </v-app>
 </template>
@@ -23,25 +31,53 @@
 <script>
 import Navigation from "../components/Navigation.vue";
 
+import { mdiTabPlus } from "@mdi/js";
+import { mdiFolder } from "@mdi/js";
+import { mdiDelete } from "@mdi/js";
+
 export default {
   components: {
     Navigation,
   },
   data: () => ({
+    addIcon: mdiTabPlus,
+    folderIcon: mdiFolder,
+    deleteIcon: mdiDelete,
+    deleteIconsActive:false,
     memoryLocations: [],
   }),
   methods: {
     onAddedButtonClicked() {
+      // TODO: permissions geben (Not allowed to load local resource:)
+      window.open("C:/");
       console.log("FilePath zum adden auswählen");
+
+      // example to test
+      this.memoryLocations.push({
+        path: "C:/",
+        icon: mdiFolder,
+      });
     },
+    onPathDeleteIconClicked(item) {
+      this.memoryLocations.splice(item, 1)
+    },
+    onDeleteButtonClicked(){
+      this.deleteIconsActive = !this.deleteIconsActive
+    }
   },
 };
 </script>
 
 <style>
-.mainContainer{
-    display: flex;
-  align-items: center;
+.mainContainer {
+  display: flex;
   justify-content: center;
+}
+#addIcon {
+  padding-left: 8px;
+  scale: 1;
+}
+#deleteIcon {
+  color: red;
 }
 </style>
