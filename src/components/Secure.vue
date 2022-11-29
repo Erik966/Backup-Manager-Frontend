@@ -1,4 +1,4 @@
-// TODO: File sollte file Explorer heißen ?
+// TODO: Component sollte file Explorer nicht Secure heißen ?
 
 <template>
   <v-app id="inspire">
