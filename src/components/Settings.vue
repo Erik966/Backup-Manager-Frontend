@@ -3,11 +3,13 @@
     <Navigation />
     <h1 align>Settings</h1>
     <div class="btnsContainer">
-      <div>
+      <div id="addButton">
         <v-btn @click="onAddedButtonClicked" item.icon>
           add <v-icon id="addIcon">{{ addIcon }}</v-icon>
         </v-btn>
-        <input id="pathInputField" type="text" name="fname">
+      </div>
+      <div id="addInputField">
+        <input id="pathInputField" type="text" name="fname" />
       </div>
     </div>
     <div class="pathsContainer">
@@ -28,10 +30,10 @@
       </v-list>
     </div>
     <div>
-        <v-btn @click="onDeleteButtonClicked" item.icon>
-          Delete <v-icon id="addIcon">{{ deleteIcon }}</v-icon>
-        </v-btn>
-      </div>
+      <v-btn @click="onDeleteButtonClicked" item.icon>
+        Delete <v-icon id="addIcon">{{ deleteIcon }}</v-icon>
+      </v-btn>
+    </div>
   </v-main>
 </template>
 
@@ -90,7 +92,8 @@ export default {
 }
 .btnsContainer {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: nowrap;
+  align-items: center;
   padding: 16px;
 }
 #addIcon {
@@ -100,10 +103,16 @@ export default {
 #deleteIcon {
   color: red;
 }
-#pathInputField{
+#pathInputField {
   margin-left: 16px;
   background-color: #eeeeee;
   border-radius: 2px;
-  height: 28px;
+  height: 32px;
+  width: calc(100% - 16px);
+}
+#addButton{
+}
+#addInputField{
+  flex-grow: 10;
 }
 </style>
