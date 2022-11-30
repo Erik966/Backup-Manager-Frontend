@@ -2,19 +2,19 @@
   <v-main>
     <Navigation />
     <h1 align>Settings</h1>
-    <v-div class="btnsContainer">
-      <v-div>
+    <div class="btnsContainer">
+      <div>
         <v-btn @click="onAddedButtonClicked" item.icon>
           add <v-icon id="addIcon">{{ addIcon }}</v-icon>
         </v-btn>
-      </v-div>
-      <v-div>
+      </div>
+      <div>
         <v-btn @click="onDeleteButtonClicked" item.icon>
           Delete <v-icon id="addIcon">{{ deleteIcon }}</v-icon>
         </v-btn>
-      </v-div>
-    </v-div>
-    <v-div class="pathsContainer">
+      </div>
+    </div>
+    <div class="pathsContainer">
       <v-list dense rounded>
         <v-list-item v-for="item in memoryLocations" :key="item.title" link>
           <v-list-item-icon>
@@ -30,7 +30,7 @@
           </v-list-item-icon>
         </v-list-item>
       </v-list>
-    </v-div>
+    </div>
   </v-main>
 </template>
 
@@ -76,7 +76,8 @@ export default {
 
 <style>
 .pathsContainer {
-  height: 100px;
+  min-height: 600px;
+  padding: 0 16px 0 16px;
 }
 .btnsContainer {
   display: flex;

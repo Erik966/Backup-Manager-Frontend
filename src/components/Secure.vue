@@ -1,9 +1,8 @@
 // TODO: Component sollte file Explorer nicht Secure heißen ?
 
 <template>
-  <v-app id="inspire">
+  <div id="inspire">
     <Navigation />
-
     <v-main>
       <h1 align>File Explorer</h1>
       <v-list dense rounded>
@@ -22,7 +21,7 @@
         </v-list-item>
       </v-list>
     </v-main>
-  </v-app>
+  </div>
 </template>
 
 <script>
