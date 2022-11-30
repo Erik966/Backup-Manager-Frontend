@@ -1,15 +1,16 @@
 <template>
   <v-main>
+    <div class="main">
     <Navigation />
     <h1 align>Settings</h1>
     <div class="btnsContainer">
+      <div id="addInputField">
+        <input id="pathInputField" type="text" name="fname" />
+      </div>
       <div id="addButton">
         <v-btn @click="onAddedButtonClicked" item.icon>
           add <v-icon id="addIcon">{{ addIcon }}</v-icon>
         </v-btn>
-      </div>
-      <div id="addInputField">
-        <input id="pathInputField" type="text" name="fname" />
       </div>
     </div>
     <div class="pathsContainer">
@@ -29,11 +30,11 @@
         </v-list-item>
       </v-list>
     </div>
-    <div>
+    <div id="deleteButton">
       <v-btn @click="onDeleteButtonClicked" item.icon>
-        Delete <v-icon id="addIcon">{{ deleteIcon }}</v-icon>
+        edit <v-icon id="addIcon">{{ deleteIcon }}</v-icon>
       </v-btn>
-    </div>
+    </div></div>
   </v-main>
 </template>
 
@@ -87,8 +88,8 @@ export default {
 
 <style>
 .pathsContainer {
-  min-height: 600px;
-  padding: 0 16px 0 16px;
+  height: 400px;
+  overflow-y: auto
 }
 .btnsContainer {
   display: flex;
@@ -104,15 +105,27 @@ export default {
   color: red;
 }
 #pathInputField {
-  margin-left: 16px;
-  background-color: #eeeeee;
-  border-radius: 2px;
+  border-radius: 4px;
+  background-color: white;
+  background: folderIcon;
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  padding-left: 40px;
   height: 32px;
-  width: calc(100% - 16px);
+  width: calc(100% - 32px);
 }
-#addButton{
+#deleteButton{
+  padding-left: 16px;
+  padding-top: 24px;
 }
-#addInputField{
+#addInputField {
   flex-grow: 10;
+}
+.main{
+  padding:16px
+}
+v-list{
+  height: 200px;
+  overflow-y:scroll
 }
 </style>
