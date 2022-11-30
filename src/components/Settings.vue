@@ -53,16 +53,24 @@ export default {
     memoryLocations: [],
   }),
   methods: {
-    onAddedButtonClicked() {
-      // TODO: permissions geben (Not allowed to load local resource:)
+    async onAddedButtonClicked() {
+
+      // wichtige Quelle: https://www.youtube.com/watch?v=8EcBJV0sOSU
+
+      // Doku: mit window.showDirectoryPicker() | Das wählen eines Pfades über das File System scheint keinen Sinn zu ergeben das man den ganzen Pfad über dem gewählten directory aus Sicherheitsgründen bei einer Webapp nicht eisehen darf ... 
+      // Des weiteren ist Window.showDirectoryPicker() für z.B. Firerfox Safari und Chrome Mobile nicht kompatibel
+
+      const filePath = await window.showDirectoryPicker();
+
+
       window.open("C:/");
-      console.log("FilePath zum adden auswählen");
+      console.log(filePath);
 
       // example to test
-      this.memoryLocations.push({
+     /*  this.memoryLocations.push({
         path: "C:/",
         icon: mdiFolder,
-      });
+      }); */
     },
     onPathDeleteIconClicked(item) {
       this.memoryLocations.splice(item, 1);
