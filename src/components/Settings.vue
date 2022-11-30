@@ -1,8 +1,20 @@
 <template>
-  <v-app>
+  <v-main>
     <Navigation />
-    <v-main class="mainContainer">
-      <h1 align>Settings</h1>
+    <h1 align>Settings</h1>
+    <v-div class="btnsContainer">
+      <v-div>
+        <v-btn @click="onAddedButtonClicked" item.icon>
+          add <v-icon id="addIcon">{{ addIcon }}</v-icon>
+        </v-btn>
+      </v-div>
+      <v-div>
+        <v-btn @click="onDeleteButtonClicked" item.icon>
+          Delete <v-icon id="addIcon">{{ deleteIcon }}</v-icon>
+        </v-btn>
+      </v-div>
+    </v-div>
+    <v-div class="pathsContainer">
       <v-list dense rounded>
         <v-list-item v-for="item in memoryLocations" :key="item.title" link>
           <v-list-item-icon>
@@ -12,20 +24,14 @@
             <v-list-item-title>{{ item.path }}</v-list-item-title>
           </v-list-item-content>
           <v-list-item-icon v-if="deleteIconsActive">
-            <v-icon id="deleteIcon" @click="onPathDeleteIconClicked(item)" >{{ deleteIcon }}</v-icon>
+            <v-icon id="deleteIcon" @click="onPathDeleteIconClicked(item)">{{
+              deleteIcon
+            }}</v-icon>
           </v-list-item-icon>
         </v-list-item>
       </v-list>
-      <v-main>
-        <v-btn @click="onAddedButtonClicked" item.icon>
-          Add Backup Filepath <v-icon id="addIcon">{{ addIcon }}</v-icon>
-        </v-btn>
-        <v-btn @click="onDeleteButtonClicked" item.icon>
-          Delete <v-icon id="addIcon">{{ deleteIcon }}</v-icon>
-        </v-btn>
-      </v-main>
-    </v-main>
-  </v-app>
+    </v-div>
+  </v-main>
 </template>
 
 <script>
@@ -43,7 +49,7 @@ export default {
     addIcon: mdiTabPlus,
     folderIcon: mdiFolder,
     deleteIcon: mdiDelete,
-    deleteIconsActive:false,
+    deleteIconsActive: false,
     memoryLocations: [],
   }),
   methods: {
@@ -59,22 +65,26 @@ export default {
       });
     },
     onPathDeleteIconClicked(item) {
-      this.memoryLocations.splice(item, 1)
+      this.memoryLocations.splice(item, 1);
     },
-    onDeleteButtonClicked(){
-      this.deleteIconsActive = !this.deleteIconsActive
-    }
+    onDeleteButtonClicked() {
+      this.deleteIconsActive = !this.deleteIconsActive;
+    },
   },
 };
 </script>
 
 <style>
-.mainContainer {
+.pathsContainer {
+  height: 100px;
+}
+.btnsContainer {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 16px;
 }
 #addIcon {
-  padding-left: 8px;
+  padding-left: 16px;
   scale: 1;
 }
 #deleteIcon {
