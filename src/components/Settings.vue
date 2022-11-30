@@ -7,11 +7,7 @@
         <v-btn @click="onAddedButtonClicked" item.icon>
           add <v-icon id="addIcon">{{ addIcon }}</v-icon>
         </v-btn>
-      </div>
-      <div>
-        <v-btn @click="onDeleteButtonClicked" item.icon>
-          Delete <v-icon id="addIcon">{{ deleteIcon }}</v-icon>
-        </v-btn>
+        <input id="pathInputField" type="text" name="fname">
       </div>
     </div>
     <div class="pathsContainer">
@@ -31,6 +27,11 @@
         </v-list-item>
       </v-list>
     </div>
+    <div>
+        <v-btn @click="onDeleteButtonClicked" item.icon>
+          Delete <v-icon id="addIcon">{{ deleteIcon }}</v-icon>
+        </v-btn>
+      </div>
   </v-main>
 </template>
 
@@ -54,23 +55,23 @@ export default {
   }),
   methods: {
     async onAddedButtonClicked() {
-
       // wichtige Quelle: https://www.youtube.com/watch?v=8EcBJV0sOSU
 
-      // Doku: mit window.showDirectoryPicker() | Das wählen eines Pfades über das File System scheint keinen Sinn zu ergeben das man den ganzen Pfad über dem gewählten directory aus Sicherheitsgründen bei einer Webapp nicht eisehen darf ... 
+      // Doku: mit window.showDirectoryPicker() | Das wählen eines Pfades über das File System scheint keinen Sinn zu ergeben das man den ganzen Pfad über dem gewählten directory aus Sicherheitsgründen bei einer Webapp nicht eisehen darf ...
       // Des weiteren ist Window.showDirectoryPicker() für z.B. Firerfox Safari und Chrome Mobile nicht kompatibel
-
-      const filePath = await window.showDirectoryPicker();
-
+      // Auch andere HTML/JavaScript Lösungen funktionieren aus Sicherheitsgründen nicht: https://stackoverflow.com/questions/2809688/directory-chooser-in-html-page/2809706#2809706
+      // FileSystemDirectoryEntry.getDirectory([path][, options][, successCallback][, errorCallback]);
+      // path Optional Either an absolute path or a path relative to the directory on which the method is called, describing which directory entry to return. Absolute paths may not be able to be used, !!for security reasons!!.
+      // https://reference.codeproject.com/dom/filesystemdirectoryentry/getdirectory
 
       window.open("C:/");
-      console.log(filePath);
+      console.log("idk wie wir es machen sollen");
 
       // example to test
-     /*  this.memoryLocations.push({
+      this.memoryLocations.push({
         path: "C:/",
         icon: mdiFolder,
-      }); */
+      });
     },
     onPathDeleteIconClicked(item) {
       this.memoryLocations.splice(item, 1);
@@ -93,10 +94,16 @@ export default {
   padding: 16px;
 }
 #addIcon {
-  padding-left: 16px;
+  margin-left: 16px;
   scale: 1;
 }
 #deleteIcon {
   color: red;
+}
+#pathInputField{
+  margin-left: 16px;
+  background-color: #eeeeee;
+  border-radius: 2px;
+  height: 28px;
 }
 </style>
