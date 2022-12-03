@@ -1,7 +1,7 @@
 // TODO: Component sollte file Explorer nicht Secure heißen ?
 
 <template>
-  <v-app id="inspire">
+  <div id="inspire">
     <Navigation />
 
     <v-content>
@@ -45,6 +45,7 @@ import Navigation from '../components/Navigation.vue'
 import { mdiFolder } from "@mdi/js";
 import { mdiCogOutline } from "@mdi/js";
 import { mdiLogout } from "@mdi/js";
+
 
 import axios from "axios";
 import { mdiFileAccount } from "@mdi/js";
