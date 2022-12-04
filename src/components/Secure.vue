@@ -22,7 +22,7 @@
               <v-btn @click="get_download(item.title)">
               <v-icon>{{ icons[0] }}</v-icon>
               </v-btn>
-              <v-btn @click="removeBundle(editForm.suggested_bundles, bundle)">
+              <v-btn @click="remove_file(item.title)">
               <v-icon small>mdi-delete</v-icon>
         </v-btn>
           </v-list-item-icon>
@@ -130,6 +130,20 @@ export default {
             this.error = err.response.data.error;
           }
         );
+    },
+    remove_file(filename){
+      var file_path = "/";
+      for (var i = 0; i < this.currentPath.length; i++) {
+        file_path += this.currentPath[i] + "/";
+      }
+      file_path += filename;
+      axios.post("http://localhost:5000/remove_file", { path_to_delete: file_path}).then(
+      response => {
+        console.log(response);
+        this.get_files();
+      
+      }
+    ).catch(console.error)
     },
     get_download(filename){
       console.log(filename);
