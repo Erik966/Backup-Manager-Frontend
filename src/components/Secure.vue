@@ -37,7 +37,8 @@
 >Upload</v-btn>
 <input type="file" ref="files" v-on:change="handleFilesUpload()" multiple>
     </v-content>
-  </v-app>
+      </div>
+
 </template>
 
 <script>
@@ -132,12 +133,21 @@ export default {
     },
     get_download(filename){
       console.log(filename);
-      axios.get("http://localhost:5000/download").then(
-      response => {
-          console.log(response);
-          this.get_files();
+      var file_path = "/";
+      for (var i = 0; i < this.currentPath.length; i++) {
+        file_path += this.currentPath[i] + "/";
       }
-    )
+      file_path += filename;
+      axios.get("http://localhost:5000/download", { responseType: 'blob',params:{file_path: file_path, file_name: this.currentPath[-1]} }).then(
+      response => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "download.zip");
+        document.body.appendChild(link);
+        link.click();
+      }
+    ).catch(console.error)
     },
     handleFilesUpload(){
   this.files_to_upload = this.$refs.files.files;
