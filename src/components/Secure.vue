@@ -25,6 +25,9 @@
               <v-btn @click="remove_file(item.title)">
               <v-icon small>mdi-delete</v-icon>
         </v-btn>
+        <v-btn @click="move_file(item.title)">
+              <v-icon small>icons[1]</v-icon>
+        </v-btn>
           </v-list-item-icon>
           </v-list-item-content>
         </v-list-item>
@@ -36,6 +39,12 @@
   @click=upload_files()
 >Upload</v-btn>
 <input type="file" ref="files" v-on:change="handleFilesUpload()" multiple>
+<v-btn
+  color="primary"
+  elevation="3"
+  raised
+  @click=move_file2()
+>Move To</v-btn>
     </v-content>
       </div>
 
@@ -46,7 +55,7 @@ import Navigation from '../components/Navigation.vue'
 import { mdiFolder } from "@mdi/js";
 import { mdiCogOutline } from "@mdi/js";
 import { mdiLogout } from "@mdi/js";
-
+import { mdiContentCopy } from '@mdi/js';
 
 import axios from "axios";
 import { mdiFileAccount } from "@mdi/js";
@@ -62,7 +71,9 @@ export default {
     failed: false,
     files_to_upload: "",
     check_val: "..",
-    icons: [mdiTrayArrowDown],
+    copy_path: "",
+    copy_name: "",
+    icons: [mdiTrayArrowDown,mdiContentCopy],
     items: [
       { title: "File Explorer", icon: mdiFolder },
       { title: "Settings", icon: mdiCogOutline},
@@ -144,6 +155,31 @@ export default {
       
       }
     ).catch(console.error)
+    },
+    move_file(filename){
+      var file_path = "/";
+      for (var i = 0; i < this.currentPath.length; i++) {
+        file_path += this.currentPath[i] + "/";
+      }
+      file_path += filename;
+      this.copy_path = file_path;
+      this.copy_name = filename;
+    },
+    move_file2(){
+      if (this.copy_path === '') return;
+      var file_path = "/";
+      for (var i = 0; i < this.currentPath.length; i++) {
+        file_path += this.currentPath[i] + "/";
+      }
+      file_path += this.copy_name;
+      axios.post("http://localhost:5000/move_file", { path_to_move: this.copy_path, dest_dir: file_path}).then(
+      response => {
+        console.log(response);
+        this.get_files();
+      
+      })
+
+
     },
     get_download(filename){
       console.log(filename);
