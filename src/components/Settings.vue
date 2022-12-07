@@ -2,15 +2,21 @@
   <v-main>
     <div class="main">
       <Navigation />
-      
+
       <h1>Settings</h1>
 
       <v-divider></v-divider>
 
-      <h2>Password</h2>
+      <div class="settingHeadlineContainer">
+        <h2 class="settingHeading">Password </h2>
+        <v-btn @click="onClickShowChangePassword" item.icon>
+              change password
+              <v-icon class="headlineButton">{{ changePassword }}</v-icon>
+            </v-btn>
+      </div>
 
-      <div id="passwordContainerWrapper">
-        <div id="passwordInputFieldContainer">
+      <div class="passwordContainerWrapper" v-if="changePasswordActive">
+        <div class="passwordInputFieldContainer">
           <div class="passwordBlockContainer">
             <div>
               <p>old password</p>
@@ -35,7 +41,7 @@
               <input class="passwordInputField" type="text" name="fname" />
             </div>
           </div>
-          <div id="changePasswordContainer">
+          <div class="changePasswordContainer">
             <v-btn @click="onPasswordChangedClick" item.icon>
               change password
               <v-icon id="changePassword">{{ changePassword }}</v-icon>
@@ -46,17 +52,53 @@
 
       <v-divider></v-divider>
 
-      <h2>Backup - Server</h2>
-      <div class="btnsContainer">
-        <div id="addInputField">
-          <input id="pathInputField" type="text" name="fname" />
-        </div>
-        <div id="addButton">
-          <v-btn @click="onAddedButtonClicked" item.icon>
-            add <v-icon id="addIcon">{{ addIcon }}</v-icon>
-          </v-btn>
+     
+      <div class="settingHeadlineContainer">
+        <h2 class="settingHeading">Backup- Server </h2>
+        <v-btn @click="onClickShowAddBackupServer" item.icon>
+              ADD
+              <v-icon class="headlineButton">{{ addIcon }}</v-icon>
+            </v-btn>
+      </div>
+
+      <div class="passwordContainerWrapper" v-if="addBackupServerActive">
+        <div class="passwordInputFieldContainer">
+          <div class="passwordBlockContainer">
+            <div>
+              <p>username</p>
+            </div>
+            <div>
+              <input class="passwordInputField" type="text" name="fname" />
+            </div>
+          </div>
+          <div class="passwordBlockContainer">
+            <div>
+              <p>ssh command</p>
+            </div>
+            <div>
+              <input class="passwordInputField" type="text" name="fname" />
+            </div>
+          </div>
+          <div class="passwordBlockContainer">
+            <div>
+              <p>password</p>
+            </div>
+            <div class="passwordBlockContainer">
+              <input class="passwordInputField" type="text" name="fname" />
+            </div>
+          </div>
+          <div class="changePasswordContainer">
+            <div id="addButton">
+              <v-btn @click="onAddedButtonClicked" item.icon>
+                add <v-icon id="addIcon">{{ addIcon }}</v-icon>
+              </v-btn>
+            </div>
+          </div>
         </div>
       </div>
+
+      <v-divider></v-divider>
+
       <div class="pathsContainer">
         <v-list dense rounded>
           <v-list-item
@@ -109,6 +151,8 @@ export default {
     editIcon: mdiPencilOutline,
     changePassword: mdiLockReset,
     deleteIconsActive: false,
+    changePasswordActive: false,
+    addBackupServerActive: false,
     memoryLocations: [],
   }),
   methods: {
@@ -139,6 +183,12 @@ export default {
     },
     onDeleteButtonClicked() {
       this.deleteIconsActive = !this.deleteIconsActive;
+    },
+    onClickShowChangePassword(){
+      this.changePasswordActive = !this.changePasswordActive;
+    },
+    onClickShowAddBackupServer(){
+      this.addBackupServerActive = !this.addBackupServerActive;
     },
   },
 };
@@ -206,12 +256,13 @@ export default {
   display: flex;
   justify-content: space-evenly;
 } */
-#passwordInputFieldContainer{
+.passwordInputFieldContainer {
   padding: 32px;
+  min-width: calc(30% + 64px);
   background-color: #222222; /* selbe Farbe wie oben!*/
   border-radius: 4px;
 }
-#passwordContainerWrapper {
+.passwordContainerWrapper {
   margin: 16px 0px 16px 0px;
   display: flex;
   justify-content: center;
@@ -220,12 +271,24 @@ export default {
   display: flex;
   justify-content: space-between;
 }
-#changePasswordContainer{
+.changePasswordContainer {
+  margin-top: 24px;
   display: flex;
-  justify-content: right;
-  padding-top: 16px;
+  justify-content: left;
 }
-h2{
+.settingHeadlineContainer{
   margin: 32px;
+  display: flex;
+  justify-content: left;
+  flex-direction: row;
+}
+.settingHeading{
+  margin-right: 32px;
 }
 </style>
+
+
+
+
+bei den settings macht es sinn change password und add backup server mit einem builder also eienr component zu machen da sie beide gleich aufgebaut sind
+somit erreichen wir bessere erweiterbarkeit, bessere Übersichtlichkeit, und besserere Trennung (Modularisierung)
