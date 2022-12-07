@@ -2,14 +2,18 @@
   <v-main>
     <div class="main">
       <Navigation />
-      <h1 align>Settings</h1>
+      
+      <h1>Settings</h1>
 
-      <h3>Change Password:</h3>
+      <v-divider></v-divider>
+
+      <h2>Password</h2>
+
       <div id="passwordContainerWrapper">
         <div id="passwordInputFieldContainer">
           <div class="passwordBlockContainer">
             <div>
-              <p>old Password</p>
+              <p>old password</p>
             </div>
             <div>
               <input class="passwordInputField" type="text" name="fname" />
@@ -17,7 +21,7 @@
           </div>
           <div class="passwordBlockContainer">
             <div>
-              <p>repeat new Password</p>
+              <p>repeat new password</p>
             </div>
             <div>
               <input class="passwordInputField" type="text" name="fname" />
@@ -25,15 +29,24 @@
           </div>
           <div class="passwordBlockContainer">
             <div>
-              <p>new Password</p>
+              <p>new password</p>
             </div>
             <div class="passwordBlockContainer">
               <input class="passwordInputField" type="text" name="fname" />
             </div>
           </div>
+          <div id="changePasswordContainer">
+            <v-btn @click="onPasswordChangedClick" item.icon>
+              change password
+              <v-icon id="changePassword">{{ changePassword }}</v-icon>
+            </v-btn>
+          </div>
         </div>
       </div>
 
+      <v-divider></v-divider>
+
+      <h2>Backup - Server</h2>
       <div class="btnsContainer">
         <div id="addInputField">
           <input id="pathInputField" type="text" name="fname" />
@@ -83,6 +96,7 @@ import { mdiTabPlus } from "@mdi/js";
 import { mdiFolder } from "@mdi/js";
 import { mdiDelete } from "@mdi/js";
 import { mdiPencilOutline } from "@mdi/js";
+import { mdiLockReset } from "@mdi/js";
 
 export default {
   components: {
@@ -93,6 +107,7 @@ export default {
     folderIcon: mdiFolder,
     deleteIcon: mdiDelete,
     editIcon: mdiPencilOutline,
+    changePassword: mdiLockReset,
     deleteIconsActive: false,
     memoryLocations: [],
   }),
@@ -169,6 +184,9 @@ export default {
   padding-left: 16px;
   padding-top: 24px;
 }
+#changePassword {
+  padding-left: 16px;
+}
 #addInputField {
   flex-grow: 10;
 }
@@ -188,12 +206,26 @@ export default {
   display: flex;
   justify-content: space-evenly;
 } */
+#passwordInputFieldContainer{
+  padding: 32px;
+  background-color: #222222; /* selbe Farbe wie oben!*/
+  border-radius: 4px;
+}
 #passwordContainerWrapper {
+  margin: 16px 0px 16px 0px;
   display: flex;
   justify-content: center;
-} 
+}
 .passwordBlockContainer {
   display: flex;
   justify-content: space-between;
+}
+#changePasswordContainer{
+  display: flex;
+  justify-content: right;
+  padding-top: 16px;
+}
+h2{
+  margin: 32px;
 }
 </style>
