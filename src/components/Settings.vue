@@ -8,11 +8,11 @@
       <v-divider></v-divider>
 
       <div class="settingHeadlineContainer">
-        <h2 class="settingHeading">Password </h2>
+        <h2 class="settingHeading">Password</h2>
         <v-btn @click="onClickShowChangePassword" item.icon>
-              change password
-              <v-icon class="headlineButton">{{ changePassword }}</v-icon>
-            </v-btn>
+          change password
+          <v-icon class="headlineButton">{{ changePassword }}</v-icon>
+        </v-btn>
       </div>
 
       <div class="passwordContainerWrapper" v-if="changePasswordActive">
@@ -22,7 +22,12 @@
               <p>old password</p>
             </div>
             <div>
-              <input class="passwordInputField" type="text" name="fname" />
+              <input
+                class="passwordInputField"
+                type="text"
+                name="fname"
+                v-model="password.oldPassword"
+              />
             </div>
           </div>
           <div class="passwordBlockContainer">
@@ -30,7 +35,12 @@
               <p>repeat new password</p>
             </div>
             <div>
-              <input class="passwordInputField" type="text" name="fname" />
+              <input
+                class="passwordInputField"
+                type="text"
+                name="fname"
+                v-model="password.newPassword"
+              />
             </div>
           </div>
           <div class="passwordBlockContainer">
@@ -38,7 +48,12 @@
               <p>new password</p>
             </div>
             <div class="passwordBlockContainer">
-              <input class="passwordInputField" type="text" name="fname" />
+              <input
+                class="passwordInputField"
+                type="text"
+                name="fname"
+                v-model="password.newPasswordRepeat"
+              />
             </div>
           </div>
           <div class="changePasswordContainer">
@@ -52,13 +67,12 @@
 
       <v-divider></v-divider>
 
-     
       <div class="settingHeadlineContainer">
-        <h2 class="settingHeading">Backup- Server </h2>
+        <h2 class="settingHeading">Backup- Server</h2>
         <v-btn @click="onClickShowAddBackupServer" item.icon>
-              ADD
-              <v-icon class="headlineButton">{{ addIcon }}</v-icon>
-            </v-btn>
+          ADD
+          <v-icon class="headlineButton">{{ addIcon }}</v-icon>
+        </v-btn>
       </div>
 
       <div class="passwordContainerWrapper" v-if="addBackupServerActive">
@@ -98,7 +112,7 @@
       </div>
 
       <v-divider></v-divider>
-      
+
       <div class="pathsContainer">
         <v-list dense rounded>
           <v-list-item
@@ -121,9 +135,9 @@
             <v-icon id="editIcon">{{ editIcon }}</v-icon>
           </v-list-item>
         </v-list>
-        <div v-if="(memoryLocations.length == 0)">
-        <p class="hint">You have not selected any backup server yet</p>
-      </div>
+        <div v-if="memoryLocations.length == 0">
+          <p class="hint">You have not selected any backup server yet</p>
+        </div>
       </div>
       <div id="deleteButton">
         <v-btn @click="onDeleteButtonClicked" item.icon>
@@ -157,7 +171,13 @@ export default {
     changePasswordActive: false,
     addBackupServerActive: false,
     memoryLocations: [],
+    password: {
+      oldPassword: "",
+      newPassword: "",
+      newPasswordRepeat: "",
+    },
   }),
+
   methods: {
     async onAddedButtonClicked() {
       // wichtige Quelle: https://www.youtube.com/watch?v=8EcBJV0sOSU
@@ -187,11 +207,20 @@ export default {
     onDeleteButtonClicked() {
       this.deleteIconsActive = !this.deleteIconsActive;
     },
-    onClickShowChangePassword(){
+    onClickShowChangePassword() {
       this.changePasswordActive = !this.changePasswordActive;
     },
-    onClickShowAddBackupServer(){
+    onClickShowAddBackupServer() {
       this.addBackupServerActive = !this.addBackupServerActive;
+    },
+    onPasswordChangedClick() {
+      this.password = [];
+      if (
+        this.password.newPassword === this.password.newPasswordRepeat &&
+        this.password.oldPassword === localStorage.getItem("password")
+      ) {
+        localStorage.setItem("password"); //TODO password local storage
+      }
     },
   },
 };
@@ -249,16 +278,6 @@ export default {
 #editIcon {
   margin-left: 16px;
 }
-/* #passwordInputFieldContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: calc(100% - 220px);
-}
-#passwordContainerWrapper {
-  display: flex;
-  justify-content: space-evenly;
-} */
 .passwordInputFieldContainer {
   padding: 32px;
   min-width: calc(30% + 64px);
@@ -279,24 +298,23 @@ export default {
   display: flex;
   justify-content: left;
 }
-.settingHeadlineContainer{
+.settingHeadlineContainer {
   margin: 32px;
   display: flex;
   justify-content: left;
   flex-direction: row;
 }
-.settingHeading{
+.settingHeading {
   margin-right: 32px;
 }
-.hint{
+.hint {
   color: #504e31;
   padding: 32px;
   font-size: 24px;
 }
 </style>
 
-
-
-
-bei den settings macht es sinn change password und add backup server mit einem builder also eienr component zu machen da sie beide gleich aufgebaut sind
-somit erreichen wir bessere erweiterbarkeit, bessere Übersichtlichkeit, und besserere Trennung (Modularisierung)
+bei den settings macht es sinn change password und add backup server mit einem
+builder also eienr component zu machen da sie beide gleich aufgebaut sind somit
+erreichen wir bessere erweiterbarkeit, bessere Übersichtlichkeit, und besserere
+Trennung (Modularisierung)
