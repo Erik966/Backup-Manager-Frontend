@@ -98,7 +98,7 @@
       </div>
 
       <v-divider></v-divider>
-
+      
       <div class="pathsContainer">
         <v-list dense rounded>
           <v-list-item
@@ -121,6 +121,9 @@
             <v-icon id="editIcon">{{ editIcon }}</v-icon>
           </v-list-item>
         </v-list>
+        <div v-if="(memoryLocations.length == 0)">
+        <p class="hint">You have not selected any backup server yet</p>
+      </div>
       </div>
       <div id="deleteButton">
         <v-btn @click="onDeleteButtonClicked" item.icon>
@@ -263,7 +266,7 @@ export default {
   border-radius: 4px;
 }
 .passwordContainerWrapper {
-  margin: 16px 0px 16px 0px;
+  margin: 16px 0px 48px 0px;
   display: flex;
   justify-content: center;
 }
@@ -284,6 +287,11 @@ export default {
 }
 .settingHeading{
   margin-right: 32px;
+}
+.hint{
+  color: #504e31;
+  padding: 32px;
+  font-size: 24px;
 }
 </style>
 
