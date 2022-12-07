@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import login from '../views/login.vue'
+import login from '../views/Login.vue'
 import secure from '../views/secure.vue'
 import settings from '../views/settings.vue'
 
