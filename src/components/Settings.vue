@@ -9,26 +9,26 @@
         <div id="passwordInputFieldContainer">
           <div class="passwordBlockContainer">
             <div>
-              <div>
-                <p>old Password</p>
-              </div>
-              <div>
-                <p>repeat new Password</p>
-              </div>
-              <div>
-                <p>new Password</p>
-              </div>
+              <p>old Password</p>
             </div>
             <div>
-              <div>
-                <input class="passwordInputField" type="text" name="fname" />
-              </div>
-              <div class="passwordBlockContainer">
-                <input class="passwordInputField" type="text" name="fname" />
-              </div>
-              <div class="passwordBlockContainer">
-                <input class="passwordInputField" type="text" name="fname" />
-              </div>
+              <input class="passwordInputField" type="text" name="fname" />
+            </div>
+          </div>
+          <div class="passwordBlockContainer">
+            <div>
+              <p>repeat new Password</p>
+            </div>
+            <div>
+              <input class="passwordInputField" type="text" name="fname" />
+            </div>
+          </div>
+          <div class="passwordBlockContainer">
+            <div>
+              <p>new Password</p>
+            </div>
+            <div class="passwordBlockContainer">
+              <input class="passwordInputField" type="text" name="fname" />
             </div>
           </div>
         </div>
@@ -163,7 +163,7 @@ export default {
   padding-left: 8px;
   background-position: 10px 10px;
   height: 32px;
-  width: calc(100%);
+  margin-left: 16px;
 }
 #deleteButton {
   padding-left: 16px;
@@ -178,7 +178,7 @@ export default {
 #editIcon {
   margin-left: 16px;
 }
-#passwordInputFieldContainer {
+/* #passwordInputFieldContainer {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -187,8 +187,13 @@ export default {
 #passwordContainerWrapper {
   display: flex;
   justify-content: space-evenly;
-}
+} */
+#passwordContainerWrapper {
+  display: flex;
+  justify-content: center;
+} 
 .passwordBlockContainer {
   display: flex;
+  justify-content: space-between;
 }
 </style>
