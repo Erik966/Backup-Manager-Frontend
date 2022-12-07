@@ -15,7 +15,7 @@
     </div>
     <div class="pathsContainer">
       <v-list dense rounded>
-        <v-list-item v-for="item in memoryLocations" :key="item.title" link>
+        <v-list-item @click="onMemoryLocationListItemClicked" v-for="item in memoryLocations" :key="item.title" link>
           <v-list-item-icon>
             <v-icon>{{ folderIcon }}</v-icon>
           </v-list-item-icon>
@@ -27,12 +27,13 @@
               deleteIcon
             }}</v-icon>
           </v-list-item-icon>
+           <v-icon id="editIcon">{{ editIcon }}</v-icon>
         </v-list-item>
       </v-list>
     </div>
     <div id="deleteButton">
       <v-btn @click="onDeleteButtonClicked" item.icon>
-        edit <v-icon id="addIcon">{{ deleteIcon }}</v-icon>
+        delete <v-icon id="addIcon">{{ deleteIcon }}</v-icon>
       </v-btn>
     </div></div>
   </v-main>
@@ -44,6 +45,7 @@ import Navigation from "../components/Navigation.vue";
 import { mdiTabPlus } from "@mdi/js";
 import { mdiFolder } from "@mdi/js";
 import { mdiDelete } from "@mdi/js";
+import { mdiPencilOutline } from '@mdi/js';
 
 export default {
   components: {
@@ -53,6 +55,7 @@ export default {
     addIcon: mdiTabPlus,
     folderIcon: mdiFolder,
     deleteIcon: mdiDelete,
+    editIcon: mdiPencilOutline,
     deleteIconsActive: false,
     memoryLocations: [],
   }),
@@ -75,6 +78,9 @@ export default {
         path: "C:/",
         icon: mdiFolder,
       });
+    },
+    onMemoryLocationListItemClicked(){
+      console.log("hello")
     },
     onPathDeleteIconClicked(item) {
       this.memoryLocations.splice(item, 1);
@@ -107,7 +113,6 @@ export default {
 #pathInputField {
   border-radius: 4px;
   background-color: white;
-  background: folderIcon;
   background-position: 10px 10px;
   background-repeat: no-repeat;
   padding-left: 40px;
@@ -124,8 +129,8 @@ export default {
 .main{
   padding:16px
 }
-v-list{
-  height: 200px;
-  overflow-y:scroll
+#editIcon{
+  margin-left: 16px;
 }
+
 </style>
