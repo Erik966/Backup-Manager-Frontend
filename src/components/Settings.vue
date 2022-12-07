@@ -1,41 +1,78 @@
 <template>
   <v-main>
     <div class="main">
-    <Navigation />
-    <h1 align>Settings</h1>
-    <div class="btnsContainer">
-      <div id="addInputField">
-        <input id="pathInputField" type="text" name="fname" />
+      <Navigation />
+      <h1 align>Settings</h1>
+
+      <h3>Change Password:</h3>
+      <div id="passwordContainerWrapper">
+        <div id="passwordInputFieldContainer">
+          <div class="passwordBlockContainer">
+            <div>
+              <div>
+                <p>old Password</p>
+              </div>
+              <div>
+                <p>repeat new Password</p>
+              </div>
+              <div>
+                <p>new Password</p>
+              </div>
+            </div>
+            <div>
+              <div>
+                <input class="passwordInputField" type="text" name="fname" />
+              </div>
+              <div class="passwordBlockContainer">
+                <input class="passwordInputField" type="text" name="fname" />
+              </div>
+              <div class="passwordBlockContainer">
+                <input class="passwordInputField" type="text" name="fname" />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div id="addButton">
-        <v-btn @click="onAddedButtonClicked" item.icon>
-          add <v-icon id="addIcon">{{ addIcon }}</v-icon>
+
+      <div class="btnsContainer">
+        <div id="addInputField">
+          <input id="pathInputField" type="text" name="fname" />
+        </div>
+        <div id="addButton">
+          <v-btn @click="onAddedButtonClicked" item.icon>
+            add <v-icon id="addIcon">{{ addIcon }}</v-icon>
+          </v-btn>
+        </div>
+      </div>
+      <div class="pathsContainer">
+        <v-list dense rounded>
+          <v-list-item
+            @click="onMemoryLocationListItemClicked"
+            v-for="item in memoryLocations"
+            :key="item.title"
+            link
+          >
+            <v-list-item-icon>
+              <v-icon>{{ folderIcon }}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>{{ item.path }}</v-list-item-title>
+            </v-list-item-content>
+            <v-list-item-icon v-if="deleteIconsActive">
+              <v-icon id="deleteIcon" @click="onPathDeleteIconClicked(item)">{{
+                deleteIcon
+              }}</v-icon>
+            </v-list-item-icon>
+            <v-icon id="editIcon">{{ editIcon }}</v-icon>
+          </v-list-item>
+        </v-list>
+      </div>
+      <div id="deleteButton">
+        <v-btn @click="onDeleteButtonClicked" item.icon>
+          delete <v-icon id="addIcon">{{ deleteIcon }}</v-icon>
         </v-btn>
       </div>
     </div>
-    <div class="pathsContainer">
-      <v-list dense rounded>
-        <v-list-item @click="onMemoryLocationListItemClicked" v-for="item in memoryLocations" :key="item.title" link>
-          <v-list-item-icon>
-            <v-icon>{{ folderIcon }}</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>{{ item.path }}</v-list-item-title>
-          </v-list-item-content>
-          <v-list-item-icon v-if="deleteIconsActive">
-            <v-icon id="deleteIcon" @click="onPathDeleteIconClicked(item)">{{
-              deleteIcon
-            }}</v-icon>
-          </v-list-item-icon>
-           <v-icon id="editIcon">{{ editIcon }}</v-icon>
-        </v-list-item>
-      </v-list>
-    </div>
-    <div id="deleteButton">
-      <v-btn @click="onDeleteButtonClicked" item.icon>
-        delete <v-icon id="addIcon">{{ deleteIcon }}</v-icon>
-      </v-btn>
-    </div></div>
   </v-main>
 </template>
 
@@ -45,7 +82,7 @@ import Navigation from "../components/Navigation.vue";
 import { mdiTabPlus } from "@mdi/js";
 import { mdiFolder } from "@mdi/js";
 import { mdiDelete } from "@mdi/js";
-import { mdiPencilOutline } from '@mdi/js';
+import { mdiPencilOutline } from "@mdi/js";
 
 export default {
   components: {
@@ -79,8 +116,8 @@ export default {
         icon: mdiFolder,
       });
     },
-    onMemoryLocationListItemClicked(){
-      console.log("hello")
+    onMemoryLocationListItemClicked() {
+      console.log("hello");
     },
     onPathDeleteIconClicked(item) {
       this.memoryLocations.splice(item, 1);
@@ -95,7 +132,7 @@ export default {
 <style>
 .pathsContainer {
   height: 400px;
-  overflow-y: auto
+  overflow-y: auto;
 }
 .btnsContainer {
   display: flex;
@@ -119,18 +156,39 @@ export default {
   height: 32px;
   width: calc(100% - 32px);
 }
-#deleteButton{
+.passwordInputField {
+  margin: 8px 0px 8px 0px;
+  border-radius: 4px;
+  background-color: white;
+  padding-left: 8px;
+  background-position: 10px 10px;
+  height: 32px;
+  width: calc(100%);
+}
+#deleteButton {
   padding-left: 16px;
   padding-top: 24px;
 }
 #addInputField {
   flex-grow: 10;
 }
-.main{
-  padding:16px
+.main {
+  padding: 16px;
 }
-#editIcon{
+#editIcon {
   margin-left: 16px;
 }
-
+#passwordInputFieldContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: calc(100% - 220px);
+}
+#passwordContainerWrapper {
+  display: flex;
+  justify-content: space-evenly;
+}
+.passwordBlockContainer {
+  display: flex;
+}
 </style>
