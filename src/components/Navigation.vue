@@ -1,5 +1,5 @@
 <template>
-  <v-main>
+  <div></div>
     <v-navigation-drawer v-model="drawer" app>
       <v-list dense rounded>
         <v-list-item
@@ -25,7 +25,7 @@
 
       <v-toolbar-title>Backup Manager</v-toolbar-title>
     </v-app-bar>
-  </v-main>
+  </div>
 </template>
 
 <script>
