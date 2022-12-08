@@ -82,7 +82,7 @@
               <p>username</p>
             </div>
             <div>
-              <input class="passwordInputField" type="text" name="fname" />
+              <input class="passwordInputField" type="text" name="fname" v-model="backupServerInformations.username" />
             </div>
           </div>
           <div class="passwordBlockContainer">
@@ -90,7 +90,7 @@
               <p>ssh command</p>
             </div>
             <div>
-              <input class="passwordInputField" type="text" name="fname" />
+              <input class="passwordInputField" type="text" name="fname" v-model="backupServerInformations.sshCommand"/>
             </div>
           </div>
           <div class="passwordBlockContainer">
@@ -98,7 +98,7 @@
               <p>password</p>
             </div>
             <div class="passwordBlockContainer">
-              <input class="passwordInputField" type="text" name="fname" />
+              <input class="passwordInputField" type="text" name="fname" v-model="backupServerInformations.password"/>
             </div>
           </div>
           <div class="changePasswordContainer">
@@ -176,28 +176,14 @@ export default {
       newPassword: "",
       newPasswordRepeat: "",
     },
+    backupServerInformations: {
+      username: "",
+      sshCommand: "",
+      password: "",
+    },
   }),
 
   methods: {
-    async onAddedButtonClicked() {
-      // wichtige Quelle: https://www.youtube.com/watch?v=8EcBJV0sOSU
-
-      // Doku: mit window.showDirectoryPicker() | Das wählen eines Pfades über das File System scheint keinen Sinn zu ergeben das man den ganzen Pfad über dem gewählten directory aus Sicherheitsgründen bei einer Webapp nicht eisehen darf ...
-      // Des weiteren ist Window.showDirectoryPicker() für z.B. Firerfox Safari und Chrome Mobile nicht kompatibel
-      // Auch andere HTML/JavaScript Lösungen funktionieren aus Sicherheitsgründen nicht: https://stackoverflow.com/questions/2809688/directory-chooser-in-html-page/2809706#2809706
-      // FileSystemDirectoryEntry.getDirectory([path][, options][, successCallback][, errorCallback]);
-      // path Optional Either an absolute path or a path relative to the directory on which the method is called, describing which directory entry to return. Absolute paths may not be able to be used, !!for security reasons!!.
-      // https://reference.codeproject.com/dom/filesystemdirectoryentry/getdirectory
-
-      window.open("C:/");
-      console.log("idk wie wir es machen sollen");
-
-      // example to test
-      this.memoryLocations.push({
-        path: "C:/",
-        icon: mdiFolder,
-      });
-    },
     onMemoryLocationListItemClicked() {
       console.log("hello");
     },
@@ -221,6 +207,13 @@ export default {
       ) {
         localStorage.setItem("password"); //TODO password local storage
       }
+    },
+    onAddedButtonClicked() {
+      this.backupServerInformations = [];
+      this.memoryLocations.push({
+        path: "C:/",
+        icon: mdiFolder,
+      });
     },
   },
 };
@@ -314,7 +307,27 @@ export default {
 }
 </style>
 
-bei den settings macht es sinn change password und add backup server mit einem
-builder also eienr component zu machen da sie beide gleich aufgebaut sind somit
-erreichen wir bessere erweiterbarkeit, bessere Übersichtlichkeit, und besserere
-Trennung (Modularisierung)
+// wichtige Quelle: https://www.youtube.com/watch?v=8EcBJV0sOSU // Doku: mit
+window.showDirectoryPicker() | Das wählen eines Pfades über das File System
+scheint keinen Sinn zu ergeben das man den ganzen Pfad über dem gewählten
+directory aus Sicherheitsgründen bei einer Webapp nicht eisehen darf ... // Des
+weiteren ist Window.showDirectoryPicker() für z.B. Firerfox Safari und Chrome
+Mobile nicht kompatibel // Auch andere HTML/JavaScript Lösungen funktionieren
+aus Sicherheitsgründen nicht:
+https://stackoverflow.com/questions/2809688/directory-chooser-in-html-page/2809706#2809706
+// FileSystemDirectoryEntry.getDirectory([path][, options][, successCallback][,
+errorCallback]); // path Optional Either an absolute path or a path relative to
+the directory on which the method is called, describing which directory entry to
+return. Absolute paths may not be able to be used, !!for security reasons!!. //
+https://reference.codeproject.com/dom/filesystemdirectoryentry/getdirectory
+
+
+window.open("C:/"); console.log("idk wie wir es machen sollen"); // example to
+test this.memoryLocations.push({ path: "C:/", icon: mdiFolder, 
+
+
+bei den settings
+macht es sinn change password und add backup server mit einem builder also eienr
+component zu machen da sie beide gleich aufgebaut sind somit erreichen wir
+bessere erweiterbarkeit, bessere Übersichtlichkeit, und besserere Trennung
+(Modularisierung)
