@@ -4,7 +4,8 @@
   <v-main>
     <Navigation />
 
-      <h1 align>File Explorer</h1>
+    <h1 align>File Explorer</h1>
+    <div class="fileExplorerContainer">
       <v-list dense rounded>
         <v-list-item v-for="item in items2" :key="item.title" link>
           <!-- <v-list-item-icon>
@@ -31,19 +32,27 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-      <v-btn color="primary" elevation="3" raised @click="upload_files()"
-        >Upload</v-btn
-      >
-      <input
-        type="file"
-        ref="files"
-        v-on:change="handleFilesUpload()"
-        multiple
-      />
-      <v-btn color="primary" elevation="3" raised @click="move_file2()"
-        >Move To</v-btn
-      >
-
+      <div class="consoleContainer">
+        <div>
+          <v-btn color="primary" elevation="3" raised @click="upload_files()"
+            >Upload</v-btn
+          >
+        </div>
+        <div>
+          <input
+            type="file"
+            ref="files"
+            v-on:change="handleFilesUpload()"
+            multiple
+          />
+        </div>
+        <div>
+          <v-btn color="primary" elevation="3" raised @click="move_file2()"
+            >Move To</v-btn
+          >
+        </div>
+      </div>
+    </div>
   </v-main>
 </template>
 
@@ -232,5 +241,14 @@ export default {
 <style>
 h1 {
   text-align: center;
+}
+.fileExplorerContainer {
+  padding: 16px;
+}
+.consoleContainer {
+  padding-top: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 </style>
