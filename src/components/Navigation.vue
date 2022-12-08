@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <div>
     <v-navigation-drawer v-model="drawer" app>
       <v-list dense rounded>
         <v-list-item
