@@ -18,17 +18,23 @@
             <v-list-item-title @click="on_item_click(item.number)">{{
               item.title
             }}</v-list-item-title>
-            <v-list-item-icon v-if="item.title != check_val">
-              <v-btn @click="get_download(item.title)">
-                <v-icon>{{ icons[0] }}</v-icon>
-              </v-btn>
-              <v-btn @click="remove_file(item.title)">
-                <v-icon small>mdi-delete</v-icon>
-              </v-btn>
-              <v-btn @click="move_file(item.title)">
-                <v-icon small>icons[1]</v-icon>
-              </v-btn>
-            </v-list-item-icon>
+            <div class="buttonContainer" v-if="item.title != check_val">
+              <div>
+                <v-btn @click="get_download(item.title)">
+                  <v-icon>{{ icons[0] }}</v-icon>
+                </v-btn>
+              </div>
+              <div>
+                <v-btn @click="remove_file(item.title)">
+                  <v-icon small>mdi-delete</v-icon>
+                </v-btn>
+              </div>
+              <div>
+                <v-btn @click="move_file(item.title)">
+                  <v-icon small>icons[1]</v-icon>
+                </v-btn>
+              </div>
+            </div>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -246,6 +252,12 @@ h1 {
   padding: 16px;
 }
 .consoleContainer {
+  padding-top: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.buttonContainer{
   padding-top: 16px;
   display: flex;
   flex-direction: row;
