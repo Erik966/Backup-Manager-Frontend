@@ -11,7 +11,7 @@
         <h2 class="settingHeading">Password</h2>
         <v-btn @click="onClickShowChangePassword" item.icon>
           change password
-          <v-icon class="headlineButton">{{ changePassword }}</v-icon>
+          <v-icon class="iconPadding">{{ changePassword }}</v-icon>
         </v-btn>
       </div>
 
@@ -56,11 +56,26 @@
               />
             </div>
           </div>
-          <div class="changePasswordContainer">
-            <v-btn @click="onPasswordChangedClick" item.icon>
-              change password
-              <v-icon id="changePassword">{{ changePassword }}</v-icon>
-            </v-btn>
+          <div class="buttonAllertContainer">
+            <div>
+              <v-btn @click="onPasswordChangedClick" item.icon>
+                change password
+                <v-icon id="changePassword" class="iconPadding">{{
+                  changePassword
+                }}</v-icon>
+              </v-btn>
+            </div>
+            <div>
+              <v-alert
+                v-if="changePasswordFailed"
+                border="left"
+                color="red"
+                dense
+                type="warning"
+                max-width="300px"
+                >The username or the password is incorrect.</v-alert
+              >
+            </div>
           </div>
         </div>
       </div>
@@ -71,7 +86,7 @@
         <h2 class="settingHeading">Backup- Server</h2>
         <v-btn @click="onClickShowAddBackupServer" item.icon>
           ADD
-          <v-icon class="headlineButton">{{ addIcon }}</v-icon>
+          <v-icon class="iconPadding">{{ addIcon }}</v-icon>
         </v-btn>
       </div>
 
@@ -79,33 +94,73 @@
         <div class="passwordInputFieldContainer">
           <div class="passwordBlockContainer">
             <div>
+              <p>server address</p>
+            </div>
+            <div>
+              <input
+                class="passwordInputField"
+                type="text"
+                name="fname"
+                v-model="backupServerInformations.serverAddress"
+              />
+            </div>
+          </div>
+          <div class="passwordBlockContainer">
+            <div>
               <p>username</p>
             </div>
             <div>
-              <input class="passwordInputField" type="text" name="fname" v-model="backupServerInformations.username" />
+              <input
+                class="passwordInputField"
+                type="text"
+                name="fname"
+                v-model="backupServerInformations.username"
+              />
             </div>
           </div>
           <div class="passwordBlockContainer">
             <div>
-              <p>ssh command</p>
+              <p>path</p>
             </div>
             <div>
-              <input class="passwordInputField" type="text" name="fname" v-model="backupServerInformations.sshCommand"/>
+              <input
+                class="passwordInputField"
+                type="text"
+                name="fname"
+                v-model="backupServerInformations.path"
+              />
             </div>
           </div>
           <div class="passwordBlockContainer">
             <div>
-              <p>password</p>
+              <p>port</p>
             </div>
             <div class="passwordBlockContainer">
-              <input class="passwordInputField" type="text" name="fname" v-model="backupServerInformations.password"/>
+              <input
+                class="passwordInputField"
+                type="text"
+                name="fname"
+                v-model="backupServerInformations.port"
+              />
             </div>
           </div>
-          <div class="changePasswordContainer">
+          <div class="buttonAllertContainer">
             <div id="addButton">
               <v-btn @click="onAddedButtonClicked" item.icon>
-                add <v-icon id="addIcon">{{ addIcon }}</v-icon>
+                add
+                <v-icon id="addIcon" class="iconPadding">{{ addIcon }}</v-icon>
               </v-btn>
+            </div>
+            <div>
+              <v-alert
+                border="left"
+                color="red"
+                dense
+                type="warning"
+                max-width="300px"
+                v-if="addBackupServerFailed"
+                >{{addBackupServerFailedAllert}}
+              </v-alert>
             </div>
           </div>
         </div>
@@ -141,7 +196,8 @@
       </div>
       <div id="deleteButton">
         <v-btn @click="onDeleteButtonClicked" item.icon>
-          delete <v-icon id="addIcon">{{ deleteIcon }}</v-icon>
+          delete
+          <v-icon id="addIcon" class="iconPadding">{{ deleteIcon }}</v-icon>
         </v-btn>
       </div>
     </div>
@@ -177,10 +233,14 @@ export default {
       newPasswordRepeat: "",
     },
     backupServerInformations: {
+      serverAddress: "",
       username: "",
-      sshCommand: "",
-      password: "",
+      path: "",
+      port: "",
     },
+    changePasswordFailed: false,
+    addBackupServerFailed: false,
+    addBackupServerFailedAllert: "something went wrong",
   }),
 
   methods: {
@@ -206,6 +266,8 @@ export default {
         this.password.oldPassword === localStorage.getItem("password")
       ) {
         localStorage.setItem("password"); //TODO password local storage
+      } else {
+        this.changePasswordFailed = true;
       }
     },
     onAddedButtonClicked() {
@@ -214,6 +276,8 @@ export default {
         path: "C:/",
         icon: mdiFolder,
       });
+      this.addBackupServerFailed = true;
+      this.addBackupServerFailedAllert = "This server does not exist"
     },
   },
 };
@@ -256,7 +320,6 @@ export default {
   margin-left: 16px;
 }
 #deleteButton {
-  padding-left: 16px;
   padding-top: 24px;
 }
 #changePassword {
@@ -286,11 +349,6 @@ export default {
   display: flex;
   justify-content: space-between;
 }
-.changePasswordContainer {
-  margin-top: 24px;
-  display: flex;
-  justify-content: left;
-}
 .settingHeadlineContainer {
   margin: 32px;
   display: flex;
@@ -304,6 +362,16 @@ export default {
   color: #504e31;
   padding: 32px;
   font-size: 24px;
+}
+.iconPadding {
+  padding-left: 8px;
+}
+.buttonAllertContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 24px;
+  gap: 8px;
 }
 </style>
 
@@ -320,13 +388,8 @@ errorCallback]); // path Optional Either an absolute path or a path relative to
 the directory on which the method is called, describing which directory entry to
 return. Absolute paths may not be able to be used, !!for security reasons!!. //
 https://reference.codeproject.com/dom/filesystemdirectoryentry/getdirectory
-
-
 window.open("C:/"); console.log("idk wie wir es machen sollen"); // example to
-test this.memoryLocations.push({ path: "C:/", icon: mdiFolder, 
-
-
-bei den settings
+test this.memoryLocations.push({ path: "C:/", icon: mdiFolder, bei den settings
 macht es sinn change password und add backup server mit einem builder also eienr
 component zu machen da sie beide gleich aufgebaut sind somit erreichen wir
 bessere erweiterbarkeit, bessere Übersichtlichkeit, und besserere Trennung

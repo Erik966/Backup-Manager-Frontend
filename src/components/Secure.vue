@@ -44,13 +44,21 @@
             >Upload</v-btn
           >
         </div>
-        <div>
-          <input
-            type="file"
-            ref="files"
-            v-on:change="handleFilesUpload()"
-            multiple
-          />
+        <div class="fileInput">
+          <template>
+            <v-file-input
+              ref="files"
+              label="File input"
+              outlined
+              dense
+              filled
+              show-size
+              multiple
+              truncate-length="15"
+              background-color="#222222"
+              v-on:change="handleFilesUpload()"
+            ></v-file-input>
+          </template>
         </div>
         <div>
           <v-btn color="primary" elevation="3" raised @click="move_file2()"
@@ -218,10 +226,6 @@ export default {
         })
         .catch(console.error);
     },
-    handleFilesUpload() {
-      this.files_to_upload = this.$refs.files.files;
-      // console.log(this.files_to_upload);
-    },
     upload_files() {
       let data = new FormData();
       for (var i = 0; i < this.files_to_upload.length; i++) {
@@ -240,6 +244,12 @@ export default {
         this.get_files();
       });
     },
+    computed: {
+      handleFilesUpload() {
+        this.files_to_upload = this.$refs.files.files;
+        // console.log(this.files_to_upload);
+      },
+    },
   },
 };
 </script>
@@ -256,11 +266,16 @@ h1 {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  max-width: 600px;
 }
-.buttonContainer{
+.buttonContainer {
   padding-top: 16px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 16px;
+}
+.fileInput {
+  width: 240px;
 }
 </style>
