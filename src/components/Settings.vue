@@ -282,6 +282,7 @@ export default {
         axios
           .post("http://localhost:5000/changePassword", {
             oldPassword: this.password.oldPassword,
+            newPassword: this.newPassword
           })
           .then(
             (res) => {
