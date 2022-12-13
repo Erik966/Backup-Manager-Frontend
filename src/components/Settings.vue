@@ -73,14 +73,14 @@
                 dense
                 type="warning"
                 max-width="300px"
-                >Change Password failed.</v-alert
+                >{{ changePasswordFailedMessage }}</v-alert
               >
               <v-alert
                 v-if="changePasswordStatusSuccess"
                 border="left"
                 color="green"
                 dense
-                type="warning"
+                type="success"
                 max-width="300px"
                 >Password changed succesfully.</v-alert
               >
@@ -249,11 +249,11 @@ export default {
       path: "",
       port: "",
     },
-    //changePasswordFailed: false,
+    changePasswordFailedMessage: "Something went wrong!",
     changePasswordStatusSuccess: false,
     changePasswordStatusFailed: false,
     addBackupServerFailed: false,
-    addBackupServerFailedAllert: "something went wrong",
+    addBackupServerFailedAllert: "Something went wrong!",
   }),
 
   methods: {
@@ -288,21 +288,19 @@ export default {
               //if successfull
               if (res.status === 200) {
                 console.log("200");
-                console.log(res.data);
-                this.changePasswordStatusSuccess= true;
+                this.changePasswordStatusSuccess = true;
               }
             },
             (err) => {
               console.log("401");
               console.log(err.response.data);
               this.changePasswordStatusFailed = true;
-              /*    this.failed = true;
-          console.log(err.response);
-          this.error = err.response.data.error */
+              this.changePasswordFailedMessage = "The old password is wrong.";
             }
           );
       } else {
-        //this.changePasswordFailed = true;
+        this.changePasswordStatusFailed = true;
+        this.changePasswordFailedMessage = "New passwords do not match.";
       }
       this.password = [];
     },

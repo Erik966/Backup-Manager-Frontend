@@ -31,7 +31,7 @@
               </div>
               <div>
                 <v-btn @click="move_file(item.title)">
-                  <v-icon small>icons[1]</v-icon>
+                  <v-icon small> {{icons[1]}}</v-icon>
                 </v-btn>
               </div>
             </div>
@@ -120,6 +120,7 @@ export default {
         return;
       }
       this.currentPath.push(clicked_item["title"]);
+      console.log(clicked_item["title"])
       this.get_files();
     },
     get_files() {
@@ -269,7 +270,7 @@ h1 {
   max-width: 600px;
 }
 .buttonContainer {
-  padding-top: 16px;
+  padding-top: 8px;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
