@@ -14,8 +14,8 @@
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title @click="on_item_click(item.number)">{{
+          <v-list-item-content @click="on_item_click(item.number)">
+            <v-list-item-title >{{
               item.title
             }}</v-list-item-title>
             <div class="buttonContainer" v-if="item.title != check_val">
@@ -112,23 +112,28 @@ export default {
   },
   methods: {
     on_item_click(number_item) {
+      console.log("reached muss");
       var clicked_item = this.items2[number_item];
       if (!clicked_item["directory"]) return;
       if (clicked_item["title"] == "..") {
         this.currentPath.pop();
+          console.log("reached 0");
         this.get_files();
         return;
       }
       this.currentPath.push(clicked_item["title"]);
       console.log(clicked_item["title"])
+      console.log("reached 1")
       this.get_files();
     },
     get_files() {
+          
+    console.log("reached 2");
       console.log(this.currentPath);
       var file_path = "/";
       for (var i = 0; i < this.currentPath.length; i++) {
         file_path += this.currentPath[i] + "/";
-      }
+      }            
       axios
         .post("http://localhost:5000/fileexplorer", { directory: file_path })
         .then(
