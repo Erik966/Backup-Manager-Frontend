@@ -32,7 +32,7 @@
           </div>
           <div class="passwordBlockContainer">
             <div>
-              <p>repeat new password</p>
+              <p>new password</p>
             </div>
             <div>
               <input
@@ -45,7 +45,7 @@
           </div>
           <div class="passwordBlockContainer">
             <div>
-              <p>new password</p>
+              <p>repeat new password</p>
             </div>
             <div class="passwordBlockContainer">
               <input
@@ -67,13 +67,22 @@
             </div>
             <div>
               <v-alert
-                v-if="changePasswordFailed"
+                v-if="changePasswordStatusFailed"
                 border="left"
                 color="red"
                 dense
                 type="warning"
                 max-width="300px"
-                >The username or the password is incorrect.</v-alert
+                >Change Password failed.</v-alert
+              >
+              <v-alert
+                v-if="changePasswordStatusSuccess"
+                border="left"
+                color="green"
+                dense
+                type="warning"
+                max-width="300px"
+                >Password changed succesfully.</v-alert
               >
             </div>
           </div>
@@ -159,7 +168,7 @@
                 type="warning"
                 max-width="300px"
                 v-if="addBackupServerFailed"
-                >{{addBackupServerFailedAllert}}
+                >{{ addBackupServerFailedAllert }}
               </v-alert>
             </div>
           </div>
@@ -207,6 +216,8 @@
 <script>
 import Navigation from "../components/Navigation.vue";
 
+import axios from "axios";
+
 import { mdiTabPlus } from "@mdi/js";
 import { mdiFolder } from "@mdi/js";
 import { mdiDelete } from "@mdi/js";
@@ -238,7 +249,9 @@ export default {
       path: "",
       port: "",
     },
-    changePasswordFailed: false,
+    //changePasswordFailed: false,
+    changePasswordStatusSuccess: false,
+    changePasswordStatusFailed: false,
     addBackupServerFailed: false,
     addBackupServerFailedAllert: "something went wrong",
   }),
@@ -255,21 +268,45 @@ export default {
     },
     onClickShowChangePassword() {
       this.changePasswordActive = !this.changePasswordActive;
+      this.changePasswordStatusFailed = false;
+      this.changePasswordStatusSuccess = false;
+      this.password = [];
     },
     onClickShowAddBackupServer() {
       this.addBackupServerActive = !this.addBackupServerActive;
     },
     onPasswordChangedClick() {
-      this.password = [];
-      if (
-        this.password.newPassword === this.password.newPasswordRepeat &&
-        this.password.oldPassword === localStorage.getItem("password")
-      ) {
-        localStorage.setItem("password"); //TODO password local storage
+      this.changePasswordStatusFailed = false;
+      this.changePasswordStatusSuccess = false;
+      if (this.password.newPassword === this.password.newPasswordRepeat) {
+        axios
+          .post("http://localhost:5000/changePassword", {
+            oldPassword: this.password.oldPassword,
+          })
+          .then(
+            (res) => {
+              //if successfull
+              if (res.status === 200) {
+                console.log("200");
+                console.log(res.data);
+                this.changePasswordStatusSuccess= true;
+              }
+            },
+            (err) => {
+              console.log("401");
+              console.log(err.response.data);
+              this.changePasswordStatusFailed = true;
+              /*    this.failed = true;
+          console.log(err.response);
+          this.error = err.response.data.error */
+            }
+          );
       } else {
-        this.changePasswordFailed = true;
+        //this.changePasswordFailed = true;
       }
+      this.password = [];
     },
+
     onAddedButtonClicked() {
       this.backupServerInformations = [];
       this.memoryLocations.push({
@@ -277,7 +314,7 @@ export default {
         icon: mdiFolder,
       });
       this.addBackupServerFailed = true;
-      this.addBackupServerFailedAllert = "This server does not exist"
+      this.addBackupServerFailedAllert = "This server does not exist";
     },
   },
 };
