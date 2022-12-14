@@ -282,7 +282,7 @@ export default {
         axios
           .post("http://localhost:5000/changePassword", {
             oldPassword: this.password.oldPassword,
-            newPassword: this.newPassword
+            newPassword: this.newPassword,
           })
           .then(
             (res) => {
@@ -307,13 +307,42 @@ export default {
     },
 
     onAddedButtonClicked() {
+      if (
+        this.backupServerInformations.serverAddress &&
+        this.backupServerInformations.username &&
+        this.backupServerInformations.path & this.backupServerInformations.port
+      )
+      console.log("reached") 
+      {
+        axios
+          .post("http://localhost:5000/addBackupServer", {
+            serverAddress: this.backupServerInformations.serverAddress,
+            username: this.backupServerInformations.username,
+            path: this.backupServerInformations.path,
+            port: this.backupServerInformations.port,
+          })
+          .then(
+            (res) => {
+              //if successfull
+              if (res.status === 200) {
+                console.log("200");
+              }
+            },
+            (err) => {
+              console.log("401");
+              console.log(err.response.data);
+            }
+          );
+      }
+
+      this.addBackupServerFailed = true;
+      this.addBackupServerFailedAllert = "This server does not exist";
       this.backupServerInformations = [];
+
       this.memoryLocations.push({
         path: "C:/",
         icon: mdiFolder,
       });
-      this.addBackupServerFailed = true;
-      this.addBackupServerFailedAllert = "This server does not exist";
     },
   },
 };

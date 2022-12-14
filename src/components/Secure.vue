@@ -117,18 +117,21 @@ export default {
       if (!clicked_item["directory"]) return;
       if (clicked_item["title"] == "..") {
         this.currentPath.pop();
-          console.log("reached 0");
         this.get_files();
         return;
       }
       this.currentPath.push(clicked_item["title"]);
       console.log(clicked_item["title"])
-      console.log("reached 1")
       this.get_files();
     },
+
+    handleFilesUpload() {
+        console.log("hey")
+        this.files_to_upload = this.$refs.files.files;
+      },
+
     get_files() {
-          
-    console.log("reached 2");
+        
       console.log(this.currentPath);
       var file_path = "/";
       for (var i = 0; i < this.currentPath.length; i++) {
@@ -233,6 +236,9 @@ export default {
         .catch(console.error);
     },
     upload_files() {
+      console.log(this.$refs.files.files);
+      // checke das mit dem ref nicht ...
+
       let data = new FormData();
       for (var i = 0; i < this.files_to_upload.length; i++) {
         let file = this.files_to_upload[i];
@@ -249,12 +255,6 @@ export default {
         console.log(response);
         this.get_files();
       });
-    },
-    computed: {
-      handleFilesUpload() {
-        this.files_to_upload = this.$refs.files.files;
-        // console.log(this.files_to_upload);
-      },
     },
   },
 };
