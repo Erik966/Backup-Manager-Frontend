@@ -25,9 +25,7 @@
               <v-btn @click="remove_file(item.title)">
                 <v-icon small>mdi-delete</v-icon>
               </v-btn>
-              <v-btn @click="move_file(item.title)">
-                <v-icon small>icons[1]</v-icon>
-              </v-btn>
+
             </v-list-item-icon>
           </v-list-item-content>
         </v-list-item>
@@ -42,15 +40,17 @@
           <input
             type="file"
             ref="files"
+            color="blue"
             v-on:change="handleFilesUpload()"
             multiple
           />
         </div>
         <div>
-          <v-btn color="primary" elevation="3" raised @click="move_file2()"
-            >Move To</v-btn
+          <v-btn color="primary" elevation="3" raised @click="mkdir()"
+            >MkDir</v-btn
           >
         </div>
+
       </div>
     </div>
   </v-main>
@@ -99,6 +99,7 @@ export default {
   methods: {
     on_item_click(number_item) {
       var clicked_item = this.items2[number_item];
+      console.log(clicked_item);
       if (!clicked_item["directory"]) return;
       if (clicked_item["title"] == "..") {
         this.currentPath.pop();
@@ -106,16 +107,17 @@ export default {
         return;
       }
       this.currentPath.push(clicked_item["title"]);
+      console.log(this.currentPath);
       this.get_files();
     },
     get_files() {
-      console.log(this.currentPath);
-      var file_path = "/";
-      for (var i = 0; i < this.currentPath.length; i++) {
-        file_path += this.currentPath[i] + "/";
-      }
+
+      let data = new FormData();
+
+      data.append("directory" ,this.currentPath)
+
       axios
-        .post("http://localhost:5000/fileexplorer", { directory: file_path })
+        .post("http://localhost:5000/fileexplorer", data)
         .then(
           (res) => {
             if (res.status === 200) {
@@ -142,6 +144,7 @@ export default {
             }
           },
           (err) => {
+            this.currentPath.pop();
             this.failed = true;
             console.log(err.response);
             this.error = err.response.data.error;
@@ -149,58 +152,55 @@ export default {
         );
     },
     remove_file(filename) {
-      var file_path = "/";
-      for (var i = 0; i < this.currentPath.length; i++) {
-        file_path += this.currentPath[i] + "/";
-      }
-      file_path += filename;
+      let data = new FormData();
+
+      data.append("directory" ,this.currentPath);
+      data.append("delete_file", filename);
+      // file_path += filename;
       axios
-        .post("http://localhost:5000/remove_file", {
-          path_to_delete: file_path,
-        })
+        .post("http://localhost:5000/remove_file", data)
         .then((response) => {
           console.log(response);
           this.get_files();
         })
         .catch(console.error);
     },
-    move_file(filename) {
-      var file_path = "/";
-      for (var i = 0; i < this.currentPath.length; i++) {
-        file_path += this.currentPath[i] + "/";
-      }
-      file_path += filename;
-      this.copy_path = file_path;
-      this.copy_name = filename;
-    },
-    move_file2() {
-      if (this.copy_path === "") return;
-      var file_path = "/";
-      for (var i = 0; i < this.currentPath.length; i++) {
-        file_path += this.currentPath[i] + "/";
-      }
-      file_path += this.copy_name;
-      axios
-        .post("http://localhost:5000/move_file", {
-          path_to_move: this.copy_path,
-          dest_dir: file_path,
-        })
-        .then((response) => {
-          console.log(response);
-          this.get_files();
-        });
-    },
+    // move_file(filename) {
+    //   var file_path = "/";
+    //   for (var i = 0; i < this.currentPath.length; i++) {
+    //     file_path += this.currentPath[i] + "/";
+    //   }
+    //   file_path += filename;
+    //   this.copy_path = file_path;
+    //   this.copy_name = filename;
+    // },
+    // move_file2() {
+    //   if (this.copy_path === "") return;
+    //   var file_path = "/";
+    //   for (var i = 0; i < this.currentPath.length; i++) {
+    //     file_path += this.currentPath[i] + "/";
+    //   }
+    //   file_path += this.copy_name;
+    //   axios
+    //     .post("http://localhost:5000/move_file", {
+    //       path_to_move: this.copy_path,
+    //       dest_dir: file_path,
+    //     })
+    //     .then((response) => {
+    //       console.log(response);
+    //       this.get_files();
+    //     });
+    // },
     get_download(filename) {
-      console.log(filename);
-      var file_path = "/";
-      for (var i = 0; i < this.currentPath.length; i++) {
-        file_path += this.currentPath[i] + "/";
-      }
-      file_path += filename;
+
+      let data = new FormData();
+
+      data.append("directory" ,this.currentPath);
+      data.append("download", filename);
       axios
         .get("http://localhost:5000/download", {
           responseType: "blob",
-          params: { file_path: file_path, file_name: this.currentPath[-1] },
+          params: { directory: this.currentPath, file_name: filename},
         })
         .then((response) => {
           const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -220,15 +220,9 @@ export default {
       let data = new FormData();
       for (var i = 0; i < this.files_to_upload.length; i++) {
         let file = this.files_to_upload[i];
-
         data.append("files" + i, file);
       }
-
-      var file_path = "/";
-      for (var i_file = 0; i_file < this.currentPath.length; i_file++) {
-        file_path += this.currentPath[i_file] + "/";
-      }
-      data.append("destination", file_path);
+      data.append("directory",this.currentPath )
       axios.post("http://localhost:5000/upload", data).then((response) => {
         console.log(response);
         this.get_files();
@@ -244,6 +238,10 @@ h1 {
 }
 .fileExplorerContainer {
   padding: 16px;
+}
+input{
+  background-color:#0077ff;
+  color: black;
 }
 .consoleContainer {
   padding-top: 16px;
