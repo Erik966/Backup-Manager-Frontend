@@ -2,7 +2,9 @@
 <v-app>
     <v-main>
        <v-alert
-              color="error"
+       border="left"
+                color="red"
+                type="warning"
               :value="failed"
             >
               The username or the password is incorrect.

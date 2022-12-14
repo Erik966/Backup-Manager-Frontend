@@ -14,19 +14,27 @@
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title @click="on_item_click(item.number)">{{
+          <v-list-item-content @click="on_item_click(item.number)">
+            <v-list-item-title >{{
               item.title
             }}</v-list-item-title>
-            <v-list-item-icon v-if="item.title != check_val">
-              <v-btn @click="get_download(item.title)">
-                <v-icon>{{ icons[0] }}</v-icon>
-              </v-btn>
-              <v-btn @click="remove_file(item.title)">
-                <v-icon small>mdi-delete</v-icon>
-              </v-btn>
-
-            </v-list-item-icon>
+            <div class="buttonContainer" v-if="item.title != check_val">
+              <div>
+                <v-btn @click="get_download(item.title)">
+                  <v-icon>{{ icons[0] }}</v-icon>
+                </v-btn>
+              </div>
+              <div>
+                <v-btn @click="remove_file(item.title)">
+                  <v-icon small>mdi-delete</v-icon>
+                </v-btn>
+              </div>
+              <div>
+                <v-btn @click="move_file(item.title)">
+                  <v-icon small> {{icons[1]}}</v-icon>
+                </v-btn>
+              </div>
+            </div>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -36,14 +44,21 @@
             >Upload</v-btn
           >
         </div>
-        <div>
-          <input
-            type="file"
-            ref="files"
-            color="blue"
-            v-on:change="handleFilesUpload()"
-            multiple
-          />
+        <div class="fileInput">
+          <template>
+            <v-file-input
+              ref="files"
+              label="File input"
+              outlined
+              dense
+              filled
+              show-size
+              multiple
+              truncate-length="15"
+              background-color="#222222"
+              v-on:change="handleFilesUpload()"
+            ></v-file-input>
+          </template>
         </div>
         <div>
           <v-btn color="primary" elevation="3" raised @click="mkdir()"
@@ -98,6 +113,7 @@ export default {
   },
   methods: {
     on_item_click(number_item) {
+      console.log("reached muss");
       var clicked_item = this.items2[number_item];
       console.log(clicked_item);
       if (!clicked_item["directory"]) return;
@@ -107,9 +123,14 @@ export default {
         return;
       }
       this.currentPath.push(clicked_item["title"]);
-      console.log(this.currentPath);
       this.get_files();
     },
+
+    handleFilesUpload() {
+        console.log("hey")
+        this.files_to_upload = this.$refs.files.files;
+      },
+
     get_files() {
 
       let data = new FormData();
@@ -212,11 +233,10 @@ export default {
         })
         .catch(console.error);
     },
-    handleFilesUpload() {
-      this.files_to_upload = this.$refs.files.files;
-      // console.log(this.files_to_upload);
-    },
     upload_files() {
+      console.log(this.$refs.files.files);
+      // checke das mit dem ref nicht ...
+
       let data = new FormData();
       for (var i = 0; i < this.files_to_upload.length; i++) {
         let file = this.files_to_upload[i];
@@ -248,5 +268,16 @@ input{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  max-width: 600px;
+}
+.buttonContainer {
+  padding-top: 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 16px;
+}
+.fileInput {
+  width: 240px;
 }
 </style>
