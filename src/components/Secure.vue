@@ -47,7 +47,6 @@
         <div class="fileInput">
           <template>
             <v-file-input
-              ref="files"
               label="File input"
               outlined
               dense
@@ -56,8 +55,14 @@
               multiple
               truncate-length="15"
               background-color="#222222"
-              v-on:change="handleFilesUpload()"
+              v-model="chosenFile"
             ></v-file-input>
+<!--             <v-file-input
+                  accept=".txt"
+                  label="Click here to select a .txt file"
+                  outlined
+                  v-model="chosenFile"
+                >  </v-file-input> -->
           </template>
         </div>
         <div>
@@ -88,9 +93,9 @@ export default {
   },
   data: () => ({
     currentPath: [],
+    chosenFile: "",
     drawer: null,
     failed: false,
-    files_to_upload: "",
     check_val: "..",
     copy_path: "",
     copy_name: "",
@@ -125,11 +130,6 @@ export default {
       this.currentPath.push(clicked_item["title"]);
       this.get_files();
     },
-
-    handleFilesUpload() {
-        console.log("hey")
-        this.files_to_upload = this.$refs.files.files;
-      },
 
     get_files() {
 
@@ -234,12 +234,13 @@ export default {
         .catch(console.error);
     },
     upload_files() {
-      console.log(this.$refs.files.files);
-      // checke das mit dem ref nicht ...
+
+      // was ist das problem ?
+      console.log(this.chosenFile);
 
       let data = new FormData();
-      for (var i = 0; i < this.files_to_upload.length; i++) {
-        let file = this.files_to_upload[i];
+      for (var i = 0; i < this.chosenFile.length; i++) {
+        let file = this.chosenFile[i];
         data.append("files" + i, file);
       }
       data.append("directory",this.currentPath )
