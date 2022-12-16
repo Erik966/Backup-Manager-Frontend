@@ -55,14 +55,13 @@
               multiple
               truncate-length="15"
               background-color="#222222"
-              v-model="chosenFile"
+              v-model="files_to_upload"
             ></v-file-input>
 <!--             <v-file-input
                   accept=".txt"
                   label="Click here to select a .txt file"
                   outlined
-                  v-model="chosenFile"
-                >  </v-file-input> -->
+files_to_upload                >  </v-file-input> -->
           </template>
         </div>
         <div>
@@ -93,7 +92,7 @@ export default {
   },
   data: () => ({
     currentPath: [],
-    chosenFile: "",
+    files_to_upload: "",
     drawer: null,
     failed: false,
     check_val: "..",
@@ -236,11 +235,11 @@ export default {
     upload_files() {
 
       // was ist das problem ?
-      console.log(this.chosenFile);
+      console.log(this.files_to_upload);
 
       let data = new FormData();
-      for (var i = 0; i < this.chosenFile.length; i++) {
-        let file = this.chosenFile[i];
+      for (var i = 0; i < this.files_to_upload.length; i++) {
+        let file = this.files_to_upload[i];
         data.append("files" + i, file);
       }
       data.append("directory",this.currentPath )
