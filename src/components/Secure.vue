@@ -177,7 +177,6 @@ export default {
       data.append("directory" ,this.currentPath);
       data.append("delete_file", filename);
       data.append("auth",  localStorage.getItem("token"))
-      // file_path += filename;
       axios
         .post("http://localhost:5000/remove_file", data)
         .then((response) => {
@@ -186,32 +185,7 @@ export default {
         })
         .catch(console.error);
     },
-    // move_file(filename) {
-    //   var file_path = "/";
-    //   for (var i = 0; i < this.currentPath.length; i++) {
-    //     file_path += this.currentPath[i] + "/";
-    //   }
-    //   file_path += filename;
-    //   this.copy_path = file_path;
-    //   this.copy_name = filename;
-    // },
-    // move_file2() {
-    //   if (this.copy_path === "") return;
-    //   var file_path = "/";
-    //   for (var i = 0; i < this.currentPath.length; i++) {
-    //     file_path += this.currentPath[i] + "/";
-    //   }
-    //   file_path += this.copy_name;
-    //   axios
-    //     .post("http://localhost:5000/move_file", {
-    //       path_to_move: this.copy_path,
-    //       dest_dir: file_path,
-    //     })
-    //     .then((response) => {
-    //       console.log(response);
-    //       this.get_files();
-    //     });
-    // },
+
     get_download(filename) {
 
       let data = new FormData();

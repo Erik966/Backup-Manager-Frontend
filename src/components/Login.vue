@@ -57,6 +57,7 @@ export default {
         .then(res => {
           //if successfull
           if (res.status === 200) {
+            console.log(res.data.token)
             localStorage.setItem('token', res.data.token);
             this.$router.push('/secure');
           }
