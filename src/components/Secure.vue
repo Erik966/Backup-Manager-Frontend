@@ -196,7 +196,7 @@ export default {
       axios
         .get("http://localhost:5000/download", {
           responseType: "blob",
-          params: { directory: this.currentPath, file_name: filename},
+          params: { directory: this.currentPath, file_name: filename, auth:localStorage.getItem("token") },
         })
         .then((response) => {
           const url = window.URL.createObjectURL(new Blob([response.data]));
