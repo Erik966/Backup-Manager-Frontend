@@ -136,7 +136,7 @@ export default {
       let data = new FormData();
 
       data.append("directory" ,this.currentPath)
-
+      data.append("auth",  localStorage.getItem("token"))
       axios
         .post("http://localhost:5000/fileexplorer", data)
         .then(
@@ -177,6 +177,7 @@ export default {
 
       data.append("directory" ,this.currentPath);
       data.append("delete_file", filename);
+      data.append("auth",  localStorage.getItem("token"))
       // file_path += filename;
       axios
         .post("http://localhost:5000/remove_file", data)
@@ -218,6 +219,7 @@ export default {
 
       data.append("directory" ,this.currentPath);
       data.append("download", filename);
+      data.append("auth",  localStorage.getItem("token"));
       axios
         .get("http://localhost:5000/download", {
           responseType: "blob",
@@ -242,6 +244,7 @@ export default {
         let file = this.files_to_upload[i];
         data.append("files" + i, file);
       }
+      data.append("auth",  localStorage.getItem("token"))
       data.append("directory",this.currentPath )
       axios.post("http://localhost:5000/upload", data).then((response) => {
         console.log(response);
