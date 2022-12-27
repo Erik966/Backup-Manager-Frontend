@@ -155,7 +155,7 @@
           </div>
           <div class="buttonAllertContainer">
             <div id="addButton">
-              <v-btn @click="onAddedButtonClicked" item.icon>
+              <v-btn @click="addBackupServer" item.icon>
                 add
                 <v-icon id="addIcon" class="iconPadding">{{ addIcon }}</v-icon>
               </v-btn>
@@ -257,6 +257,21 @@ export default {
   }),
 
   methods: {
+    addBackupServer() {
+      if (this.backupServerInformations.serverAddress == "" && this.backupServerInformations.username == "" && this.backupServerInformations.path == "") return;
+      let data = new FormData();
+
+      data.append("host" ,this.backupServerInformations.serverAddress);
+      data.append("username", this.backupServerInformations.username);
+      data.append("path", this.backupServerInformations.path);
+      data.append("auth",  localStorage.getItem("token"))
+      axios
+        .post("http://localhost:5000/sshcheck", data)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch(console.error);
+    },
     onMemoryLocationListItemClicked() {
       console.log("hello");
     },
