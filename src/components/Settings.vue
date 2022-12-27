@@ -209,6 +209,23 @@
           <v-icon id="addIcon" class="iconPadding">{{ deleteIcon }}</v-icon>
         </v-btn>
       </div>
+      <v-list dense rounded>
+        <v-list-item v-for="item in items2" :key="item.title" link>
+          <v-list-item-content @click="on_item_click(item.number)">
+            <v-list-item-title >{{
+              item.server
+            }}</v-list-item-title>
+            <v-list-item-title >{{
+              item.path
+            }}</v-list-item-title>
+
+                <v-btn @click="removeserver(item.server)">
+                  <v-icon small>mdi-delete</v-icon>
+                </v-btn>
+
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
     </div>
   </v-main>
 </template>
@@ -238,6 +255,7 @@ export default {
     changePasswordActive: false,
     addBackupServerActive: false,
     memoryLocations: [],
+    items2: [],
     password: {
       oldPassword: "",
       newPassword: "",
@@ -255,6 +273,9 @@ export default {
     addBackupServerFailed: false,
     addBackupServerFailedAllert: "Something went wrong!",
   }),
+  mounted() {
+    this.getBackupServer();
+  },
 
   methods: {
     addBackupServer() {
@@ -269,8 +290,57 @@ export default {
         .post("http://localhost:5000/sshcheck", data)
         .then((response) => {
           console.log(response);
+          this.backupServerInformations.serverAddress = "";
+          this.backupServerInformations.username = "";
+          this.backupServerInformations.path = "";
+          this.getBackupServer();
         })
         .catch(console.error);
+
+      
+    },
+    removeserver(serverAddress){
+      let data = new FormData();
+
+      data.append("auth",  localStorage.getItem("token"))
+      data.append("rmserver",  serverAddress)
+      axios
+        .post("http://localhost:5000/removeserver", data)
+        .then(
+          (res) => {
+            if (res.status === 200) {
+              this.getBackupServer();
+            }
+          },
+          (err) => {
+            console.log(err.response);
+          }
+        );
+
+    },
+    getBackupServer(){
+      let data = new FormData();
+
+      data.append("auth",  localStorage.getItem("token"))
+      axios
+        .post("http://localhost:5000/getbackupserver", data)
+        .then(
+          (res) => {
+            if (res.status === 200) {
+              console.log(res.data);
+              this.items2 = [];
+              for (var i = 0; i < res.data.length; i++) {
+                this.items2.push({
+                  server: res.data[i]["serverAddress"],
+                  path: res.data[i]["path"],
+                });
+              }
+            }
+          },
+          (err) => {
+            console.log(err.response);
+          }
+        );
     },
     onMemoryLocationListItemClicked() {
       console.log("hello");
