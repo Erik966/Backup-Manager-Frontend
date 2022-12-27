@@ -65,6 +65,9 @@ files_to_upload                >  </v-file-input> -->
           </template>
         </div>
         <div>
+          <v-text-field v-model="dirname" label="dirname" />
+        </div>
+        <div>
           <v-btn color="primary" elevation="3" raised @click="mkdir()"
             >MkDir</v-btn
           >
@@ -98,6 +101,7 @@ export default {
     check_val: "..",
     copy_path: "",
     copy_name: "",
+    dirname: "",
     icons: [mdiTrayArrowDown, mdiContentCopy],
     items: [
       { title: "File Explorer", icon: mdiFolder },
@@ -185,7 +189,21 @@ export default {
         })
         .catch(console.error);
     },
+    mkdir(){
+      console.log(this.dirname);
+      if (this.dirname === "") return;
+       console.log("ok")
+      let data = new FormData();
 
+      data.append("directory" ,this.currentPath);
+      data.append("dirname", this.dirname);
+      data.append("auth",  localStorage.getItem("token"));
+      axios.post("http://localhost:5000/mkdir", data).then((response) => {
+        console.log(response);
+        this.get_files();
+      });
+      this.dirname = "";
+    },
     get_download(filename) {
 
       let data = new FormData();
