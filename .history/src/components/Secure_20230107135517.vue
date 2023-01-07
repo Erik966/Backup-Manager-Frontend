@@ -15,7 +15,9 @@
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
           <v-list-item-content @click="on_item_click(item.number)">
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
+            <v-list-item-title >{{
+              item.title
+            }}</v-list-item-title>
             <div class="buttonContainer" v-if="item.title != check_val">
               <div>
                 <v-btn @click="get_download(item.title)">
@@ -29,7 +31,7 @@
               </div>
               <div>
                 <v-btn @click="move_file(item.title)">
-                  <v-icon small> {{ icons[1] }}</v-icon>
+                  <v-icon small> {{icons[1]}}</v-icon>
                 </v-btn>
               </div>
             </div>
@@ -55,7 +57,7 @@
               background-color="#222222"
               v-model="files_to_upload"
             ></v-file-input>
-            <!--             <v-file-input
+<!--             <v-file-input
                   accept=".txt"
                   label="Click here to select a .txt file"
                   outlined
@@ -63,13 +65,25 @@ files_to_upload                >  </v-file-input> -->
           </template>
         </div>
         <div>
-          <v-text-field solo dark clearable v-model="dirname" label="dirname" dense />
+          <v-text-field v-model="dirname" label="dirname" />
         </div>
+           <v-col
+          cols="12"
+          sm="6"
+          md="3"
+        >
+          <v-text-field
+            label="Filled"
+            placeholder="Placeholder"
+            filled
+          ></v-text-field>
+        </v-col>
         <div>
           <v-btn color="primary" elevation="3" raised @click="mkdir()"
             >MkDir</v-btn
           >
         </div>
+
       </div>
     </div>
   </v-main>
@@ -132,49 +146,52 @@ export default {
     },
 
     get_files() {
+
       let data = new FormData();
 
-      data.append("directory", this.currentPath);
-      data.append("auth", localStorage.getItem("token"));
-      axios.post("http://localhost:5000/fileexplorer", data).then(
-        (res) => {
-          if (res.status === 200) {
-            console.log(res.data);
-            this.items2 = [];
-            this.items2.push({
-              title: "..",
-              directory: true,
-              icon: mdiFolder,
-              number: this.items2.length,
-            });
-            for (var i = 0; i < res.data.length; i++) {
-              let new_val = {
-                title: res.data[i]["name"],
-                directory: res.data[i]["directory"],
-                icon: mdiFileAccount,
+      data.append("directory" ,this.currentPath)
+      data.append("auth",  localStorage.getItem("token"))
+      axios
+        .post("http://localhost:5000/fileexplorer", data)
+        .then(
+          (res) => {
+            if (res.status === 200) {
+              console.log(res.data);
+              this.items2 = [];
+              this.items2.push({
+                title: "..",
+                directory: true,
+                icon: mdiFolder,
                 number: this.items2.length,
-              };
-              if (new_val["directory"]) {
-                new_val["icon"] = mdiFolder;
+              });
+              for (var i = 0; i < res.data.length; i++) {
+                let new_val = {
+                  title: res.data[i]["name"],
+                  directory: res.data[i]["directory"],
+                  icon: mdiFileAccount,
+                  number: this.items2.length,
+                };
+                if (new_val["directory"]) {
+                  new_val["icon"] = mdiFolder;
+                }
+                this.items2.push(new_val);
               }
-              this.items2.push(new_val);
             }
+          },
+          (err) => {
+            this.currentPath.pop();
+            this.failed = true;
+            console.log(err.response);
+            this.error = err.response.data.error;
           }
-        },
-        (err) => {
-          this.currentPath.pop();
-          this.failed = true;
-          console.log(err.response);
-          this.error = err.response.data.error;
-        }
-      );
+        );
     },
     remove_file(filename) {
       let data = new FormData();
 
-      data.append("directory", this.currentPath);
+      data.append("directory" ,this.currentPath);
       data.append("delete_file", filename);
-      data.append("auth", localStorage.getItem("token"));
+      data.append("auth",  localStorage.getItem("token"))
       axios
         .post("http://localhost:5000/remove_file", data)
         .then((response) => {
@@ -183,15 +200,15 @@ export default {
         })
         .catch(console.error);
     },
-    mkdir() {
+    mkdir(){
       console.log(this.dirname);
       if (this.dirname === "") return;
-      console.log("ok");
+       console.log("ok")
       let data = new FormData();
 
-      data.append("directory", this.currentPath);
+      data.append("directory" ,this.currentPath);
       data.append("dirname", this.dirname);
-      data.append("auth", localStorage.getItem("token"));
+      data.append("auth",  localStorage.getItem("token"));
       axios.post("http://localhost:5000/mkdir", data).then((response) => {
         console.log(response);
         this.get_files();
@@ -199,19 +216,16 @@ export default {
       this.dirname = "";
     },
     get_download(filename) {
+
       let data = new FormData();
 
-      data.append("directory", this.currentPath);
+      data.append("directory" ,this.currentPath);
       data.append("download", filename);
-      data.append("auth", localStorage.getItem("token"));
+      data.append("auth",  localStorage.getItem("token"));
       axios
         .get("http://localhost:5000/download", {
           responseType: "blob",
-          params: {
-            directory: this.currentPath,
-            file_name: filename,
-            auth: localStorage.getItem("token"),
-          },
+          params: { directory: this.currentPath, file_name: filename, auth:localStorage.getItem("token") },
         })
         .then((response) => {
           const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -224,6 +238,7 @@ export default {
         .catch(console.error);
     },
     upload_files() {
+
       // was ist das problem ?
       console.log(this.files_to_upload);
 
@@ -232,8 +247,8 @@ export default {
         let file = this.files_to_upload[i];
         data.append("files" + i, file);
       }
-      data.append("auth", localStorage.getItem("token"));
-      data.append("directory", this.currentPath);
+      data.append("auth",  localStorage.getItem("token"))
+      data.append("directory",this.currentPath )
       axios.post("http://localhost:5000/upload", data).then((response) => {
         console.log(response);
         this.get_files();
@@ -250,8 +265,8 @@ h1 {
 .fileExplorerContainer {
   padding: 16px;
 }
-input {
-  background-color: #0077ff;
+input{
+  background-color:#0077ff;
   color: black;
 }
 .consoleContainer {
@@ -260,7 +275,6 @@ input {
   flex-direction: row;
   justify-content: space-between;
   max-width: 600px;
-  gap: 10px;
 }
 .buttonContainer {
   padding-top: 8px;

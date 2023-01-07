@@ -47,7 +47,7 @@
             <v-file-input
               label="File input"
               outlined
-              dense
+              
               filled
               show-size
               multiple
