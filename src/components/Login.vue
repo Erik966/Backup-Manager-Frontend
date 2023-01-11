@@ -53,7 +53,7 @@ export default {
         username: this.username,
         password: this.password
       }
-     axios.post('http://localhost:5000/login', user)
+     axios.post('http://192.168.0.107:5000/login', user)
         .then(res => {
           //if successfull
           if (res.status === 200) {
@@ -64,7 +64,6 @@ export default {
         }, err => {
           this.failed = true;
           console.log(err.response);
-          this.error = err.response.data.error
         })
     }
   }

@@ -141,7 +141,7 @@ export default {
       data.append("directory" ,this.currentPath)
       data.append("auth",  localStorage.getItem("token"))
       axios
-        .post("http://localhost:5000/fileexplorer", data)
+        .post("http://192.168.0.107:5000/fileexplorer", data)
         .then(
           (res) => {
             if (res.status === 200) {
@@ -182,7 +182,7 @@ export default {
       data.append("delete_file", filename);
       data.append("auth",  localStorage.getItem("token"))
       axios
-        .post("http://localhost:5000/remove_file", data)
+        .post("http://192.168.0.107:5000/remove_file", data)
         .then((response) => {
           console.log(response);
           this.get_files();
@@ -198,7 +198,7 @@ export default {
       data.append("directory" ,this.currentPath);
       data.append("dirname", this.dirname);
       data.append("auth",  localStorage.getItem("token"));
-      axios.post("http://localhost:5000/mkdir", data).then((response) => {
+      axios.post("http://192.168.0.107:5000/mkdir", data).then((response) => {
         console.log(response);
         this.get_files();
       });
@@ -212,7 +212,7 @@ export default {
       data.append("download", filename);
       data.append("auth",  localStorage.getItem("token"));
       axios
-        .get("http://localhost:5000/download", {
+        .get("http://192.168.0.107:5000/download", {
           responseType: "blob",
           params: { directory: this.currentPath, file_name: filename, auth:localStorage.getItem("token") },
         })
@@ -238,7 +238,7 @@ export default {
       }
       data.append("auth",  localStorage.getItem("token"))
       data.append("directory",this.currentPath )
-      axios.post("http://localhost:5000/upload", data).then((response) => {
+      axios.post("http://192.168.0.107:5000/upload", data).then((response) => {
         console.log(response);
         this.get_files();
       });

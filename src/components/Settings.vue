@@ -287,7 +287,7 @@ export default {
       data.append("path", this.backupServerInformations.path);
       data.append("auth",  localStorage.getItem("token"))
       axios
-        .post("http://localhost:5000/sshcheck", data)
+        .post("http://192.168.0.107:5000/sshcheck", data)
         .then((response) => {
           console.log(response);
           this.backupServerInformations.serverAddress = "";
@@ -305,7 +305,7 @@ export default {
       data.append("auth",  localStorage.getItem("token"))
       data.append("rmserver",  serverAddress)
       axios
-        .post("http://localhost:5000/removeserver", data)
+        .post("http://192.168.0.107:5000/removeserver", data)
         .then(
           (res) => {
             if (res.status === 200) {
@@ -323,7 +323,7 @@ export default {
 
       data.append("auth",  localStorage.getItem("token"))
       axios
-        .post("http://localhost:5000/getbackupserver", data)
+        .post("http://192.168.0.107:5000/getbackupserver", data)
         .then(
           (res) => {
             if (res.status === 200) {
@@ -365,7 +365,7 @@ export default {
       this.changePasswordStatusSuccess = false;
       if (this.password.newPassword === this.password.newPasswordRepeat) {
         axios
-          .post("http://localhost:5000/changePassword", {
+          .post("http://192.168.0.107:5000/changePassword", {
             oldPassword: this.password.oldPassword,
             newPassword: this.newPassword,
           })
@@ -400,7 +400,7 @@ export default {
       console.log("reached") 
       {
         axios
-          .post("http://localhost:5000/addBackupServer", {
+          .post("http://192.168.0.107:5000/addBackupServer", {
             serverAddress: this.backupServerInformations.serverAddress,
             username: this.backupServerInformations.username,
             path: this.backupServerInformations.path,
