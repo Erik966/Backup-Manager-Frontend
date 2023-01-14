@@ -232,7 +232,7 @@
 
 <script>
 import Navigation from "../components/Navigation.vue";
-
+import CryptoJS from "crypto-js";
 import axios from "axios";
 
 import { mdiTabPlus } from "@mdi/js";
@@ -282,6 +282,8 @@ export default {
       if (this.backupServerInformations.serverAddress == "" && this.backupServerInformations.username == "" && this.backupServerInformations.path == "") return;
       let data = new FormData();
 
+       data.append("secret", CryptoJS.AES.encrypt(localStorage.getItem("username") + localStorage.getItem("key_diff"),localStorage.getItem("ka")).toString() )
+      data.append("username", localStorage.getItem("username"))
       data.append("host" ,this.backupServerInformations.serverAddress);
       data.append("username", this.backupServerInformations.username);
       data.append("path", this.backupServerInformations.path);
@@ -290,6 +292,7 @@ export default {
         .post("http://192.168.0.107:5000/sshcheck", data)
         .then((response) => {
           console.log(response);
+          localStorage.setItem("key_diff", CryptoJS.AES.decrypt(response.data.secret, localStorage.getItem("ka")).toString(CryptoJS.enc.Utf8));
           this.backupServerInformations.serverAddress = "";
           this.backupServerInformations.username = "";
           this.backupServerInformations.path = "";
@@ -301,7 +304,8 @@ export default {
     },
     removeserver(serverAddress){
       let data = new FormData();
-
+       data.append("secret", CryptoJS.AES.encrypt(localStorage.getItem("username") + localStorage.getItem("key_diff"),localStorage.getItem("ka")).toString() )
+      data.append("username", localStorage.getItem("username"))
       data.append("auth",  localStorage.getItem("token"))
       data.append("rmserver",  serverAddress)
       axios
@@ -309,6 +313,7 @@ export default {
         .then(
           (res) => {
             if (res.status === 200) {
+              localStorage.setItem("key_diff", CryptoJS.AES.decrypt(res.data.secret, localStorage.getItem("ka")).toString(CryptoJS.enc.Utf8));
               this.getBackupServer();
             }
           },
@@ -320,7 +325,8 @@ export default {
     },
     getBackupServer(){
       let data = new FormData();
-
+       data.append("secret", CryptoJS.AES.encrypt(localStorage.getItem("username") + localStorage.getItem("key_diff"),localStorage.getItem("ka")).toString() )
+      data.append("username", localStorage.getItem("username"))
       data.append("auth",  localStorage.getItem("token"))
       axios
         .post("http://192.168.0.107:5000/getbackupserver", data)
@@ -328,11 +334,13 @@ export default {
           (res) => {
             if (res.status === 200) {
               console.log(res.data);
+              let backup = res.data.backup;
+              localStorage.setItem("key_diff", CryptoJS.AES.decrypt(res.data.secret, localStorage.getItem("ka")).toString(CryptoJS.enc.Utf8));
               this.items2 = [];
-              for (var i = 0; i < res.data.length; i++) {
+              for (var i = 0; i < backup.length; i++) {
                 this.items2.push({
-                  server: res.data[i]["serverAddress"],
-                  path: res.data[i]["path"],
+                  server: backup[i]["serverAddress"],
+                  path: backup[i]["path"],
                 });
               }
             }

@@ -34,6 +34,7 @@
 
 <script>
 import axios from 'axios';
+import CryptoJS from "crypto-js";
 
 export default {
   data()
@@ -48,23 +49,61 @@ export default {
   props: {
   },
    methods: {
+
+    getRandomInt(max) {
+      return Math.floor(Math.random() * max);
+    },
+
+    power(x, n, p){
+      let res = 1;
+      for (let i = 1; i <= n; i++) res = (res * x) % p;
+      return res;
+    },
+
     login() {
-      let user = {
-        username: this.username,
-        password: this.password
-      }
-     axios.post('http://192.168.0.107:5000/login', user)
-        .then(res => {
-          //if successfull
+      
+      axios.post('http://192.168.0.107:5000/login_name', {username: this.username}).then(res => {
           if (res.status === 200) {
-            console.log(res.data.token)
-            localStorage.setItem('token', res.data.token);
-            this.$router.push('/secure');
-          }
-        }, err => {
-          this.failed = true;
-          console.log(err.response);
-        })
+            let x = this.getRandomInt(res.data.P-1);
+            let X = this.power(res.data.G, x,res.data.P);
+
+             localStorage.setItem("ka", this.power(res.data.Y, x, res.data.P).toString());
+
+             localStorage.setItem("username", this.username)
+
+             axios.post('http://192.168.0.107:5000/key', {username: this.username, X: X.toString(10)}).then(res => {
+                if (res.status === 200) {
+                  console.log("Key exchange");
+    
+                  let user = {
+                      username: this.username,
+                      password: CryptoJS.AES.encrypt(this.password, localStorage.getItem("ka")).toString()
+                    }
+
+                  axios.post('http://192.168.0.107:5000/login', user)
+                      .then(res => {
+                        //if successfull
+                        if (res.status === 200) {
+                          localStorage.setItem('token', res.data.token);
+                          localStorage.setItem("key_diff", CryptoJS.AES.decrypt(res.data.secret, localStorage.getItem("ka")).toString(CryptoJS.enc.Utf8));
+                          console.log("T" + localStorage.getItem("key_diff"))
+                          this.$router.push('/secure');
+                        }
+                      }, err => {
+                        this.failed = true;
+                        console.log(err.response);
+                      })
+                    }
+                  }, err => {
+                    console.log(err.response);
+                    return;
+                  })
+              }
+            }, err => {
+              console.log(err.response);
+              return;
+            })
+
     }
   }
 }

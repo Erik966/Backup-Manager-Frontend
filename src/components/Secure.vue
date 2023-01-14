@@ -77,6 +77,7 @@ files_to_upload                >  </v-file-input> -->
 
 <script>
 import Navigation from "../components/Navigation.vue";
+import CryptoJS from "crypto-js";
 import { mdiFolder } from "@mdi/js";
 import { mdiCogOutline } from "@mdi/js";
 import { mdiLogout } from "@mdi/js";
@@ -134,12 +135,19 @@ export default {
     get_files() {
       let data = new FormData();
 
+      console.log("D" +  localStorage.getItem("username") );
+      console.log("D" + localStorage.getItem("key_diff"));
+      data.append("secret", CryptoJS.AES.encrypt(localStorage.getItem("username") + localStorage.getItem("key_diff"),localStorage.getItem("ka")).toString() )
+      data.append("username", localStorage.getItem("username"))
       data.append("directory", this.currentPath);
       data.append("auth", localStorage.getItem("token"));
       axios.post("http://192.168.0.107:5000/fileexplorer", data).then(
         (res) => {
           if (res.status === 200) {
+            console.log("HE");
+            localStorage.setItem("key_diff", CryptoJS.AES.decrypt(res.data.secret, localStorage.getItem("ka")).toString(CryptoJS.enc.Utf8));
             console.log(res.data);
+            let file_list = res.data.file_list;
             this.items2 = [];
             this.items2.push({
               title: "..",
@@ -147,10 +155,10 @@ export default {
               icon: mdiFolder,
               number: this.items2.length,
             });
-            for (var i = 0; i < res.data.length; i++) {
+            for (var i = 0; i < file_list.length; i++) {
               let new_val = {
-                title: res.data[i]["name"],
-                directory: res.data[i]["directory"],
+                title: file_list[i]["name"],
+                directory: file_list[i]["directory"],
                 icon: mdiFileAccount,
                 number: this.items2.length,
               };
@@ -172,12 +180,15 @@ export default {
     remove_file(filename) {
       let data = new FormData();
 
+       data.append("secret", CryptoJS.AES.encrypt(localStorage.getItem("username") + localStorage.getItem("key_diff"),localStorage.getItem("ka")).toString() )
+      data.append("username", localStorage.getItem("username"))
       data.append("directory", this.currentPath);
       data.append("delete_file", filename);
       data.append("auth", localStorage.getItem("token"));
       axios
         .post("http://192.168.0.107:5000/remove_file", data)
         .then((response) => {
+          localStorage.setItem("key_diff", CryptoJS.AES.decrypt(response.data.secret, localStorage.getItem("ka")).toString(CryptoJS.enc.Utf8));
           console.log(response);
           this.get_files();
         })
@@ -189,11 +200,14 @@ export default {
       console.log("ok");
       let data = new FormData();
 
+       data.append("secret", CryptoJS.AES.encrypt(localStorage.getItem("username") + localStorage.getItem("key_diff"),localStorage.getItem("ka")).toString() )
+      data.append("username", localStorage.getItem("username"))
       data.append("directory", this.currentPath);
       data.append("dirname", this.dirname);
       data.append("auth",  localStorage.getItem("token"));
       axios.post("http://192.168.0.107:5000/mkdir", data).then((response) => {
         console.log(response);
+        localStorage.setItem("key_diff", CryptoJS.AES.decrypt(response.data.secret, localStorage.getItem("ka")).toString(CryptoJS.enc.Utf8));
         this.get_files();
       });
       this.dirname = "";
@@ -201,6 +215,8 @@ export default {
     get_download(filename) {
       let data = new FormData();
 
+      data.append("secret", CryptoJS.AES.encrypt(localStorage.getItem("username") + localStorage.getItem("key_diff"),localStorage.getItem("ka")).toString() )
+      data.append("username", localStorage.getItem("username"))
       data.append("directory", this.currentPath);
       data.append("download", filename);
       data.append("auth", localStorage.getItem("token"));
@@ -211,9 +227,13 @@ export default {
             directory: this.currentPath,
             file_name: filename,
             auth: localStorage.getItem("token"),
+            username: localStorage.getItem("username"),
+            secret: CryptoJS.AES.encrypt(localStorage.getItem("username") + localStorage.getItem("key_diff"),localStorage.getItem("ka")).toString(),
+
           },
         })
         .then((response) => {
+          localStorage.setItem("key_diff", localStorage.getItem("key_diff") + "1");
           const url = window.URL.createObjectURL(new Blob([response.data]));
           const link = document.createElement("a");
           link.href = url;
@@ -232,11 +252,14 @@ export default {
         let file = this.files_to_upload[i];
         data.append("files" + i, file);
       }
+       data.append("secret", CryptoJS.AES.encrypt(localStorage.getItem("username") + localStorage.getItem("key_diff"),localStorage.getItem("ka")).toString() )
+      data.append("username", localStorage.getItem("username"))
       data.append("auth", localStorage.getItem("token"));
       data.append("directory", this.currentPath);
       axios.post("http://192.168.0.107:5000/upload", data).then((response) => {
         console.log(response);
         this.get_files();
+        localStorage.setItem("key_diff", CryptoJS.AES.decrypt(response.data.secret, localStorage.getItem("ka")).toString(CryptoJS.enc.Utf8));
       });
     },
   },
