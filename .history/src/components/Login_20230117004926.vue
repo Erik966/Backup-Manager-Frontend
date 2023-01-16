@@ -13,9 +13,9 @@
         <v-card-title class="justify-center">Login</v-card-title>
         
         <v-card-text>
-          <v-text-field outlined  v-model="username" label="Username" prepend-icon="mdi-account-circle"/>
+          <v-text-field outlined shaped v-model="username" label="Username" prepend-icon="mdi-account-circle"/>
           <v-text-field 
-          outlined 
+          outlined shaped
           v-model="password"
           label="Password" 
           :type="showPassword ? 'text' : 'password'"
