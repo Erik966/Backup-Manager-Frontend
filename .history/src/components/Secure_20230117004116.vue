@@ -62,8 +62,21 @@
 files_to_upload                >  </v-file-input> -->
           </template>
         </div>
-        <div>       
-          <v-text-field solo dark clearable v-model="dirname" label="dirname" dense />
+        <div>
+        <template>
+  <v-app>
+    <v-row class="ma-2" justify="center">
+      <v-col cols="12"
+        ><v-text-field
+       background-opacity="0"
+          label="Solo"
+          solo
+        ></v-text-field
+      ></v-col>
+    </v-row>
+  </v-app>
+</template>
+         <!--  <v-text-field solo dark clearable v-model="dirname" label="dirname" dense /> -->
         </div>
         <div>
           <v-btn color="primary" elevation="3" raised @click="mkdir()"

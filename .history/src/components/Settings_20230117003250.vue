@@ -58,7 +58,7 @@
           </div>
           <div class="buttonAllertContainer">
             <div>
-              <v-btn color="primary" @click="onPasswordChangedClick" item.icon>
+              <v-btn @click="onPasswordChangedClick" item.icon>
                 change password
                 <v-icon id="changePassword" class="iconPadding">{{
                   changePassword
@@ -93,7 +93,7 @@
 
       <div class="settingHeadlineContainer">
         <h2 class="settingHeading">Backup- Server</h2>
-        <v-btn color="primary" @click="onClickShowAddBackupServer" item.icon>
+        <v-btn @click="onClickShowAddBackupServer" item.icon>
           ADD
           <v-icon class="iconPadding">{{ addIcon }}</v-icon>
         </v-btn>
@@ -142,7 +142,7 @@
           </div>
           <div class="buttonAllertContainer">
             <div id="addButton">
-              <v-btn color="primary" @click="addBackupServer" item.icon>
+              <v-btn @click="addBackupServer" item.icon>
                 add
                 <v-icon id="addIcon" class="iconPadding">{{ addIcon }}</v-icon>
               </v-btn>

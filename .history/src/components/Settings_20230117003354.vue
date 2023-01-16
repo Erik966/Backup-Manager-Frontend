@@ -142,7 +142,7 @@
           </div>
           <div class="buttonAllertContainer">
             <div id="addButton">
-              <v-btn color="primary" @click="addBackupServer" item.icon>
+              <v-btn @click="addBackupServer" item.icon>
                 add
                 <v-icon id="addIcon" class="iconPadding">{{ addIcon }}</v-icon>
               </v-btn>

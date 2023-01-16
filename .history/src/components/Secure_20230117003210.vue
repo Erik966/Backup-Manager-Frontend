@@ -62,7 +62,7 @@
 files_to_upload                >  </v-file-input> -->
           </template>
         </div>
-        <div>       
+        <div>
           <v-text-field solo dark clearable v-model="dirname" label="dirname" dense />
         </div>
         <div>
