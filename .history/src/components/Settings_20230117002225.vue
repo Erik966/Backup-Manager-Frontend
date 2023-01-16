@@ -202,7 +202,7 @@
                 <div>
                   <v-list-item-title>{{ item.server }}</v-list-item-title>
                 </div>
-                <div class="backupServerListItemText">
+                <div>
                   <v-list-item-title>{{ item.path }}</v-list-item-title>
                 </div>
               </div>
@@ -559,9 +559,5 @@ export default {
   display: flex;
   justify-content: space-between;
   gap: 16px;
-}
-
-.backupServerListItemText{
-  padding-top: 8px;
 }
 </style>

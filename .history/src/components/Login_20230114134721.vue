@@ -61,8 +61,7 @@ export default {
     },
 
     login() {
-
-    
+      
       axios.post('http://localhost:5000/login_name', {username: this.username}).then(res => {
           if (res.status === 200) {
             let x = this.getRandomInt(res.data.P-1);

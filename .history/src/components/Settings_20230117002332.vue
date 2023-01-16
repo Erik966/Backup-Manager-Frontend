@@ -562,6 +562,6 @@ export default {
 }
 
 .backupServerListItemText{
-  padding-top: 8px;
+  gap: 40px;
 }
 </style>

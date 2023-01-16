@@ -195,27 +195,23 @@
         </v-btn>
       </div> -->
       <v-list dense rounded>
-        <v-list-item v-for="item in items2" :key="item.title" link>
-          <v-list-item-content @click="on_item_click(item.number)">
-            <div class="backupServerListItem">
-              <div>
+          <v-list-item v-for="item in items2" :key="item.title" link>
+            <v-list-item-content @click="on_item_click(item.number)">
+              <div class="backupServerListItem">
                 <div>
                   <v-list-item-title>{{ item.server }}</v-list-item-title>
                 </div>
-                <div class="backupServerListItemText">
+                <div>
                   <v-list-item-title>{{ item.path }}</v-list-item-title>
                 </div>
-              </div>
-              <div>
                 <div>
                   <v-btn @click="removeserver(item.server)">
                     <v-icon small>mdi-delete</v-icon>
                   </v-btn>
                 </div>
               </div>
-            </div>
-          </v-list-item-content>
-        </v-list-item>
+            </v-list-item-content>
+          </v-list-item>
       </v-list>
     </div>
   </v-main>
@@ -559,9 +555,5 @@ export default {
   display: flex;
   justify-content: space-between;
   gap: 16px;
-}
-
-.backupServerListItemText{
-  padding-top: 8px;
 }
 </style>

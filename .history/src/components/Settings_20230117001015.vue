@@ -162,6 +162,8 @@
         </div>
       </div>
 
+      <v-divider></v-divider>
+
       <!--      <div class="pathsContainer">
         <v-list dense rounded>
           <v-list-item
@@ -197,21 +199,17 @@
       <v-list dense rounded>
         <v-list-item v-for="item in items2" :key="item.title" link>
           <v-list-item-content @click="on_item_click(item.number)">
-            <div class="backupServerListItem">
+            <div class = "backupServerListItem">
               <div>
-                <div>
-                  <v-list-item-title>{{ item.server }}</v-list-item-title>
-                </div>
-                <div class="backupServerListItemText">
-                  <v-list-item-title>{{ item.path }}</v-list-item-title>
-                </div>
+                <v-list-item-title>{{ item.server }}</v-list-item-title>
               </div>
               <div>
-                <div>
-                  <v-btn @click="removeserver(item.server)">
-                    <v-icon small>mdi-delete</v-icon>
-                  </v-btn>
-                </div>
+                <v-list-item-title>{{ item.path }}</v-list-item-title>
+              </div>
+              <div>
+                <v-btn @click="removeserver(item.server)">
+                  <v-icon small>mdi-delete</v-icon>
+                </v-btn>
               </div>
             </div>
           </v-list-item-content>
@@ -554,14 +552,24 @@ export default {
   margin-top: 24px;
   gap: 8px;
 }
-.backupServerListItem {
-  align-items: flex-start;
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.backupServerListItemText{
-  padding-top: 8px;
-}
 </style>
+
+// wichtige Quelle: https://www.youtube.com/watch?v=8EcBJV0sOSU // Doku: mit
+window.showDirectoryPicker() | Das wählen eines Pfades über das File System
+scheint keinen Sinn zu ergeben das man den ganzen Pfad über dem gewählten
+directory aus Sicherheitsgründen bei einer Webapp nicht eisehen darf ... // Des
+weiteren ist Window.showDirectoryPicker() für z.B. Firerfox Safari und Chrome
+Mobile nicht kompatibel // Auch andere HTML/JavaScript Lösungen funktionieren
+aus Sicherheitsgründen nicht:
+https://stackoverflow.com/questions/2809688/directory-chooser-in-html-page/2809706#2809706
+// FileSystemDirectoryEntry.getDirectory([path][, options][, successCallback][,
+errorCallback]); // path Optional Either an absolute path or a path relative to
+the directory on which the method is called, describing which directory entry to
+return. Absolute paths may not be able to be used, !!for security reasons!!. //
+https://reference.codeproject.com/dom/filesystemdirectoryentry/getdirectory
+window.open("C:/"); console.log("idk wie wir es machen sollen"); // example to
+test this.memoryLocations.push({ path: "C:/", icon: mdiFolder, bei den settings
+macht es sinn change password und add backup server mit einem builder also eienr
+component zu machen da sie beide gleich aufgebaut sind somit erreichen wir
+bessere erweiterbarkeit, bessere Übersichtlichkeit, und besserere Trennung
+(Modularisierung)

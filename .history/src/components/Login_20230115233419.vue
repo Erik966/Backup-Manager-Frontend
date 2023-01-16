@@ -63,7 +63,7 @@ export default {
     login() {
 
     
-      axios.post('http://localhost:5000/login_name', {username: this.username}).then(res => {
+      axios.post('http://localhost:8080/login_name', {username: this.username}).then(res => {
           if (res.status === 200) {
             let x = this.getRandomInt(res.data.P-1);
             let X = this.power(res.data.G, x,res.data.P);
@@ -72,7 +72,7 @@ export default {
 
              localStorage.setItem("username", this.username)
 
-             axios.post('http://localhost:5000/key', {username: this.username, X: X.toString(10)}).then(res => {
+             axios.post('http://localhost:8080/key', {username: this.username, X: X.toString(10)}).then(res => {
                 if (res.status === 200) {
                   console.log("Key exchange");
     
@@ -81,7 +81,7 @@ export default {
                       password: CryptoJS.AES.encrypt(this.password, localStorage.getItem("ka")).toString()
                     }
 
-                  axios.post('http://localhost:5000/login', user)
+                  axios.post('http://localhost:8080/login', user)
                       .then(res => {
                         //if successfull
                         if (res.status === 200) {

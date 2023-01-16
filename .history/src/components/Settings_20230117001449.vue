@@ -162,6 +162,8 @@
         </div>
       </div>
 
+      <v-divider></v-divider>
+
       <!--      <div class="pathsContainer">
         <v-list dense rounded>
           <v-list-item
@@ -194,24 +196,20 @@
           <v-icon id="addIcon" class="iconPadding">{{ deleteIcon }}</v-icon>
         </v-btn>
       </div> -->
-      <v-list dense rounded>
+      <v-list  rounded>
         <v-list-item v-for="item in items2" :key="item.title" link>
           <v-list-item-content @click="on_item_click(item.number)">
-            <div class="backupServerListItem">
+            <div class = "backupServerListItem">
               <div>
-                <div>
-                  <v-list-item-title>{{ item.server }}</v-list-item-title>
-                </div>
-                <div class="backupServerListItemText">
-                  <v-list-item-title>{{ item.path }}</v-list-item-title>
-                </div>
+                <v-list-item-title>{{ item.server }}</v-list-item-title>
               </div>
               <div>
-                <div>
-                  <v-btn @click="removeserver(item.server)">
-                    <v-icon small>mdi-delete</v-icon>
-                  </v-btn>
-                </div>
+                <v-list-item-title>{{ item.path }}</v-list-item-title>
+              </div>
+              <div>
+                <v-btn @click="removeserver(item.server)">
+                  <v-icon small>mdi-delete</v-icon>
+                </v-btn>
               </div>
             </div>
           </v-list-item-content>
@@ -554,14 +552,10 @@ export default {
   margin-top: 24px;
   gap: 8px;
 }
-.backupServerListItem {
-  align-items: flex-start;
+.backupServerListItem{
   display: flex;
   justify-content: space-between;
   gap: 16px;
 }
-
-.backupServerListItemText{
-  padding-top: 8px;
-}
 </style>
+

@@ -140,6 +140,19 @@
               />
             </div>
           </div>
+          <div class="passwordBlockContainer">
+            <div>
+              <p>port</p>
+            </div>
+            <div class="passwordBlockContainer">
+              <input
+                class="passwordInputField"
+                type="text"
+                name="fname"
+                v-model="backupServerInformations.port"
+              />
+            </div>
+          </div>
           <div class="buttonAllertContainer">
             <div id="addButton">
               <v-btn @click="addBackupServer" item.icon>
@@ -162,7 +175,9 @@
         </div>
       </div>
 
-      <!--      <div class="pathsContainer">
+      <v-divider></v-divider>
+
+      <div class="pathsContainer">
         <v-list dense rounded>
           <v-list-item
             @click="onMemoryLocationListItemClicked"
@@ -193,27 +208,21 @@
           delete
           <v-icon id="addIcon" class="iconPadding">{{ deleteIcon }}</v-icon>
         </v-btn>
-      </div> -->
+      </div>
       <v-list dense rounded>
         <v-list-item v-for="item in items2" :key="item.title" link>
           <v-list-item-content @click="on_item_click(item.number)">
-            <div class="backupServerListItem">
-              <div>
-                <div>
-                  <v-list-item-title>{{ item.server }}</v-list-item-title>
-                </div>
-                <div class="backupServerListItemText">
-                  <v-list-item-title>{{ item.path }}</v-list-item-title>
-                </div>
-              </div>
-              <div>
-                <div>
-                  <v-btn @click="removeserver(item.server)">
-                    <v-icon small>mdi-delete</v-icon>
-                  </v-btn>
-                </div>
-              </div>
-            </div>
+            <v-list-item-title >{{
+              item.server
+            }}</v-list-item-title>
+            <v-list-item-title >{{
+              item.path
+            }}</v-list-item-title>
+
+                <v-btn @click="removeserver(item.server)">
+                  <v-icon small>mdi-delete</v-icon>
+                </v-btn>
+
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -256,6 +265,7 @@ export default {
       serverAddress: "",
       username: "",
       path: "",
+      port: "",
     },
     changePasswordFailedMessage: "Something went wrong!",
     changePasswordStatusSuccess: false,
@@ -269,110 +279,76 @@ export default {
 
   methods: {
     addBackupServer() {
-      if (
-        this.backupServerInformations.serverAddress == "" &&
-        this.backupServerInformations.username == "" &&
-        this.backupServerInformations.path == ""
-      )
-        return;
+      if (this.backupServerInformations.serverAddress == "" && this.backupServerInformations.username == "" && this.backupServerInformations.path == "") return;
       let data = new FormData();
 
-      data.append(
-        "secret",
-        CryptoJS.AES.encrypt(
-          localStorage.getItem("username") + localStorage.getItem("key_diff"),
-          localStorage.getItem("ka")
-        ).toString()
-      );
-      data.append("username", localStorage.getItem("username"));
-      data.append("host", this.backupServerInformations.serverAddress);
+       data.append("secret", CryptoJS.AES.encrypt(localStorage.getItem("username") + localStorage.getItem("key_diff"),localStorage.getItem("ka")).toString() )
+      data.append("username", localStorage.getItem("username"))
+      data.append("host" ,this.backupServerInformations.serverAddress);
       data.append("username", this.backupServerInformations.username);
       data.append("path", this.backupServerInformations.path);
-      data.append("auth", localStorage.getItem("token"));
+      data.append("auth",  localStorage.getItem("token"))
       axios
         .post("http://localhost:5000//sshcheck", data)
         .then((response) => {
           console.log(response);
-          localStorage.setItem(
-            "key_diff",
-            CryptoJS.AES.decrypt(
-              response.data.secret,
-              localStorage.getItem("ka")
-            ).toString(CryptoJS.enc.Utf8)
-          );
+          localStorage.setItem("key_diff", CryptoJS.AES.decrypt(response.data.secret, localStorage.getItem("ka")).toString(CryptoJS.enc.Utf8));
           this.backupServerInformations.serverAddress = "";
           this.backupServerInformations.username = "";
           this.backupServerInformations.path = "";
           this.getBackupServer();
         })
         .catch(console.error);
+
+      
     },
-    removeserver(serverAddress) {
+    removeserver(serverAddress){
       let data = new FormData();
-      data.append(
-        "secret",
-        CryptoJS.AES.encrypt(
-          localStorage.getItem("username") + localStorage.getItem("key_diff"),
-          localStorage.getItem("ka")
-        ).toString()
-      );
-      data.append("username", localStorage.getItem("username"));
-      data.append("auth", localStorage.getItem("token"));
-      data.append("rmserver", serverAddress);
-      axios.post("http://localhost:5000//removeserver", data).then(
-        (res) => {
-          if (res.status === 200) {
-            localStorage.setItem(
-              "key_diff",
-              CryptoJS.AES.decrypt(
-                res.data.secret,
-                localStorage.getItem("ka")
-              ).toString(CryptoJS.enc.Utf8)
-            );
-            this.getBackupServer();
-          }
-        },
-        (err) => {
-          console.log(err.response);
-        }
-      );
-    },
-    getBackupServer() {
-      let data = new FormData();
-      data.append(
-        "secret",
-        CryptoJS.AES.encrypt(
-          localStorage.getItem("username") + localStorage.getItem("key_diff"),
-          localStorage.getItem("ka")
-        ).toString()
-      );
-      data.append("username", localStorage.getItem("username"));
-      data.append("auth", localStorage.getItem("token"));
-      axios.post("http://localhost:5000/getbackupserver", data).then(
-        (res) => {
-          if (res.status === 200) {
-            console.log(res.data);
-            let backup = res.data.backup;
-            localStorage.setItem(
-              "key_diff",
-              CryptoJS.AES.decrypt(
-                res.data.secret,
-                localStorage.getItem("ka")
-              ).toString(CryptoJS.enc.Utf8)
-            );
-            this.items2 = [];
-            for (var i = 0; i < backup.length; i++) {
-              this.items2.push({
-                server: backup[i]["serverAddress"],
-                path: backup[i]["path"],
-              });
+       data.append("secret", CryptoJS.AES.encrypt(localStorage.getItem("username") + localStorage.getItem("key_diff"),localStorage.getItem("ka")).toString() )
+      data.append("username", localStorage.getItem("username"))
+      data.append("auth",  localStorage.getItem("token"))
+      data.append("rmserver",  serverAddress)
+      axios
+        .post("http://localhost:8080//removeserver", data)
+        .then(
+          (res) => {
+            if (res.status === 200) {
+              localStorage.setItem("key_diff", CryptoJS.AES.decrypt(res.data.secret, localStorage.getItem("ka")).toString(CryptoJS.enc.Utf8));
+              this.getBackupServer();
             }
+          },
+          (err) => {
+            console.log(err.response);
           }
-        },
-        (err) => {
-          console.log(err.response);
-        }
-      );
+        );
+
+    },
+    getBackupServer(){
+      let data = new FormData();
+       data.append("secret", CryptoJS.AES.encrypt(localStorage.getItem("username") + localStorage.getItem("key_diff"),localStorage.getItem("ka")).toString() )
+      data.append("username", localStorage.getItem("username"))
+      data.append("auth",  localStorage.getItem("token"))
+      axios
+        .post("http://localhost:8080/getbackupserver", data)
+        .then(
+          (res) => {
+            if (res.status === 200) {
+              console.log(res.data);
+              let backup = res.data.backup;
+              localStorage.setItem("key_diff", CryptoJS.AES.decrypt(res.data.secret, localStorage.getItem("ka")).toString(CryptoJS.enc.Utf8));
+              this.items2 = [];
+              for (var i = 0; i < backup.length; i++) {
+                this.items2.push({
+                  server: backup[i]["serverAddress"],
+                  path: backup[i]["path"],
+                });
+              }
+            }
+          },
+          (err) => {
+            console.log(err.response);
+          }
+        );
     },
     onMemoryLocationListItemClicked() {
       console.log("hello");
@@ -397,7 +373,7 @@ export default {
       this.changePasswordStatusSuccess = false;
       if (this.password.newPassword === this.password.newPasswordRepeat) {
         axios
-          .post("http://localhost:5000/changePassword", {
+          .post("http://localhost:8080/changePassword", {
             oldPassword: this.password.oldPassword,
             newPassword: this.newPassword,
           })
@@ -427,15 +403,16 @@ export default {
       if (
         this.backupServerInformations.serverAddress &&
         this.backupServerInformations.username &&
-        this.backupServerInformations.path
+        this.backupServerInformations.path & this.backupServerInformations.port
       )
-        console.log("reached");
+      console.log("reached") 
       {
         axios
-          .post("http://localhost:5000/addBackupServer", {
+          .post("http://localhost:8080/addBackupServer", {
             serverAddress: this.backupServerInformations.serverAddress,
             username: this.backupServerInformations.username,
             path: this.backupServerInformations.path,
+            port: this.backupServerInformations.port,
           })
           .then(
             (res) => {
@@ -554,14 +531,24 @@ export default {
   margin-top: 24px;
   gap: 8px;
 }
-.backupServerListItem {
-  align-items: flex-start;
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.backupServerListItemText{
-  padding-top: 8px;
-}
 </style>
+
+// wichtige Quelle: https://www.youtube.com/watch?v=8EcBJV0sOSU // Doku: mit
+window.showDirectoryPicker() | Das wählen eines Pfades über das File System
+scheint keinen Sinn zu ergeben das man den ganzen Pfad über dem gewählten
+directory aus Sicherheitsgründen bei einer Webapp nicht eisehen darf ... // Des
+weiteren ist Window.showDirectoryPicker() für z.B. Firerfox Safari und Chrome
+Mobile nicht kompatibel // Auch andere HTML/JavaScript Lösungen funktionieren
+aus Sicherheitsgründen nicht:
+https://stackoverflow.com/questions/2809688/directory-chooser-in-html-page/2809706#2809706
+// FileSystemDirectoryEntry.getDirectory([path][, options][, successCallback][,
+errorCallback]); // path Optional Either an absolute path or a path relative to
+the directory on which the method is called, describing which directory entry to
+return. Absolute paths may not be able to be used, !!for security reasons!!. //
+https://reference.codeproject.com/dom/filesystemdirectoryentry/getdirectory
+window.open("C:/"); console.log("idk wie wir es machen sollen"); // example to
+test this.memoryLocations.push({ path: "C:/", icon: mdiFolder, bei den settings
+macht es sinn change password und add backup server mit einem builder also eienr
+component zu machen da sie beide gleich aufgebaut sind somit erreichen wir
+bessere erweiterbarkeit, bessere Übersichtlichkeit, und besserere Trennung
+(Modularisierung)

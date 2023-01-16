@@ -141,7 +141,7 @@ export default {
       data.append("username", localStorage.getItem("username"))
       data.append("directory", this.currentPath);
       data.append("auth", localStorage.getItem("token"));
-      axios.post("http://localhost:5000/fileexplorer", data).then(
+      axios.post("http://localhost:8080/fileexplorer", data).then(
         (res) => {
           if (res.status === 200) {
             console.log("HE");
@@ -186,7 +186,7 @@ export default {
       data.append("delete_file", filename);
       data.append("auth", localStorage.getItem("token"));
       axios
-        .post("http://localhost:5000/remove_file", data)
+        .post("http://localhost:8080/remove_file", data)
         .then((response) => {
           localStorage.setItem("key_diff", CryptoJS.AES.decrypt(response.data.secret, localStorage.getItem("ka")).toString(CryptoJS.enc.Utf8));
           console.log(response);
@@ -205,7 +205,7 @@ export default {
       data.append("directory", this.currentPath);
       data.append("dirname", this.dirname);
       data.append("auth",  localStorage.getItem("token"));
-      axios.post("http://localhost:5000//mkdir", data).then((response) => {
+      axios.post("http://localhost:8080//mkdir", data).then((response) => {
         console.log(response);
         localStorage.setItem("key_diff", CryptoJS.AES.decrypt(response.data.secret, localStorage.getItem("ka")).toString(CryptoJS.enc.Utf8));
         this.get_files();
@@ -221,7 +221,7 @@ export default {
       data.append("download", filename);
       data.append("auth", localStorage.getItem("token"));
       axios
-        .get("http://localhost:5000/download", {
+        .get("http://localhost:8080/download", {
           responseType: "blob",
           params: {
             directory: this.currentPath,
@@ -256,7 +256,7 @@ export default {
       data.append("username", localStorage.getItem("username"))
       data.append("auth", localStorage.getItem("token"));
       data.append("directory", this.currentPath);
-      axios.post("http://localhost:5000//upload", data).then((response) => {
+      axios.post("http://localhost:8080//upload", data).then((response) => {
         console.log(response);
         this.get_files();
         localStorage.setItem("key_diff", CryptoJS.AES.decrypt(response.data.secret, localStorage.getItem("ka")).toString(CryptoJS.enc.Utf8));
