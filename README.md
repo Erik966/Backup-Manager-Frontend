@@ -3,7 +3,7 @@ This repo contains the code for the web frontend of the application.
 The backend is located [here](https://github.com/nikiwlan/Backup-Manager-Backend/tree/dev).  
 
 ## Set-Up
-1. Clone Git Repository and checkout `dev` branch
+1. Clone Git Repository
 2. Move to directory `Backup-Manager-Frontend`
 3. Run `npm install`
 4. Go to [Backup-Manager-Backend](https://github.com/nikiwlan/Backup-Manager-Backend/tree/dev) and follow Set-Up (if not already done).
