@@ -393,13 +393,16 @@ export default {
       this.addBackupServerActive = !this.addBackupServerActive;
     },
     onPasswordChangedClick() {
+      let old_encrypt_password =  CryptoJS.AES.encrypt(this.password.oldPassword, localStorage.getItem("ka")).toString()
+      let new_encrypt_password =  CryptoJS.AES.encrypt(this.password.newPassword, localStorage.getItem("ka")).toString()
       this.changePasswordStatusFailed = false;
       this.changePasswordStatusSuccess = false;
       if (this.password.newPassword === this.password.newPasswordRepeat) {
         axios
           .post("http://localhost:5000/changePassword", {
-            oldPassword: this.password.oldPassword,
-            newPassword: this.newPassword,
+            oldPassword: old_encrypt_password,
+            newPassword: new_encrypt_password,
+            username: localStorage.getItem("username"),
           })
           .then(
             (res) => {
