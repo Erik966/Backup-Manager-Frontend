@@ -286,11 +286,11 @@ export default {
       );
       data.append("username", localStorage.getItem("username"));
       data.append("host", this.backupServerInformations.serverAddress);
-      data.append("username", this.backupServerInformations.username);
+      data.append("hostname", this.backupServerInformations.username);
       data.append("path", this.backupServerInformations.path);
       data.append("auth", localStorage.getItem("token"));
       axios
-        .post("http://localhost:5000//sshcheck", data)
+        .post("http://localhost:5000/sshcheck", data)
         .then((response) => {
           console.log(response);
           localStorage.setItem(
@@ -319,7 +319,7 @@ export default {
       data.append("username", localStorage.getItem("username"));
       data.append("auth", localStorage.getItem("token"));
       data.append("rmserver", serverAddress);
-      axios.post("http://localhost:5000//removeserver", data).then(
+      axios.post("http://localhost:5000/removeserver", data).then(
         (res) => {
           if (res.status === 200) {
             localStorage.setItem(

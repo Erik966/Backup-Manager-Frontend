@@ -205,7 +205,7 @@ export default {
       data.append("directory", this.currentPath);
       data.append("dirname", this.dirname);
       data.append("auth",  localStorage.getItem("token"));
-      axios.post("http://localhost:5000//mkdir", data).then((response) => {
+      axios.post("http://localhost:5000/mkdir", data).then((response) => {
         console.log(response);
         localStorage.setItem("key_diff", CryptoJS.AES.decrypt(response.data.secret, localStorage.getItem("ka")).toString(CryptoJS.enc.Utf8));
         this.get_files();
@@ -256,10 +256,11 @@ export default {
       data.append("username", localStorage.getItem("username"))
       data.append("auth", localStorage.getItem("token"));
       data.append("directory", this.currentPath);
-      axios.post("http://localhost:5000//upload", data).then((response) => {
+      axios.post("http://localhost:5000/upload", data).then((response) => {
         console.log(response);
-        this.get_files();
+        
         localStorage.setItem("key_diff", CryptoJS.AES.decrypt(response.data.secret, localStorage.getItem("ka")).toString(CryptoJS.enc.Utf8));
+        this.get_files();
       });
     },
   },
