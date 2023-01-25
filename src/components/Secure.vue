@@ -27,11 +27,7 @@
                   <v-icon small>mdi-delete</v-icon>
                 </v-btn>
               </div>
-              <div>
-                <v-btn @click="move_file(item.title)">
-                  <v-icon small> {{ icons[1] }}</v-icon>
-                </v-btn>
-              </div>
+              
             </div>
           </v-list-item-content>
         </v-list-item>
